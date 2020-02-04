@@ -19,7 +19,8 @@ CSS811_HW_VERSION = 0x21
 CSS811_FW_BOOT_VERSION = 0x23
 CSS811_FW_APP_VERSION = 0x24
 CSS811_ERROR_ID = 0xE0
-CSS811_APP_START = 0xF4
+CSS811_APP_START = 0xF3
+# CSS811_APP_START = 0xF4
 CSS811_SW_RESET = 0xFF
 
 
@@ -67,8 +68,6 @@ def main():
 
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        print("")
-        print("")
         print("Status report:")
         print(status)
         #Firmware mode:
