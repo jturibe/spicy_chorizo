@@ -49,6 +49,7 @@ def interpret_error(errorcode):
     return message
 
 def main():
+
     bus = smbus.SMBus(1)
 
     #Startup
@@ -70,10 +71,6 @@ def main():
     if status & 1:
         print("    There is an error on the I²C or sensor after changing to application mode:")
         print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
-
-
-    bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
-
 
 
 
