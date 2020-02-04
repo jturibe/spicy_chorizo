@@ -19,8 +19,8 @@ CSS811_HW_VERSION = 0x21
 CSS811_FW_BOOT_VERSION = 0x23
 CSS811_FW_APP_VERSION = 0x24
 CSS811_ERROR_ID = 0xE0
-CSS811_APP_START = 0xF3
-# CSS811_APP_START = 0xF4
+# CSS811_APP_START = 0xF3
+CSS811_APP_START = 0xF4
 CSS811_SW_RESET = 0xFF
 
 
@@ -58,6 +58,30 @@ def main():
 
 
 
+        print("")
+        print("")
+        print("Setting the mode to constant power mode")
+        bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
+        #Recieve the status of the sensor:
+        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+        print("Status report:")
+        print(status)
+        #Firmware mode:
+        if (status >> 7) & 1:
+            print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+        else:
+            print("    Firmware is still in boot mode, this allows new firmware to be loaded")
+
+        if (status >> 4) & 1:
+            print("    Valid application firmware loaded")
+        else:
+            print("    No application firmware loaded")
+
+        if status & 1:
+            print("    There is an error on the I²C or sensor after changing to application mode:")
+            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+
         #Write nothing to APP_START register to set the sensor to
         #change the mode of the CCS811 from Boot mode to running the application
         print("")
@@ -86,10 +110,6 @@ def main():
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
 
 
-        print("Setting the mode to constant power mode")
-        bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
-        #Recieve the status of the sensor:
-        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
         if status & 1:
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
@@ -118,7 +138,7 @@ def main():
                 print("    There is an error on the I²C or sensor after changing to application mode:")
                 print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
 
-                
+
             value = (value >> 3) & 1
             if value :
                 x = bus.read_word_data(addr,0x02)
