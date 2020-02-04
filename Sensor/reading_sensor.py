@@ -30,7 +30,23 @@ CONSTANT_POWER_MODE = 0x10
 # def data_available(bus):
 #     bus.i2c_read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
 #     return value & 1 << 3
+def interpret_error(errorcode):
+    message = '    Error: '
 
+    if error & 1 << 5:
+        message += 'The Heater voltage is not being applied correctly; '
+    elif error & 1 << 4:
+        message += 'The Heater current in the CCS811 is not in range; '
+    elif error & 1 << 3:
+        message += 'The sensor resistance measurement has reached or exceded the maximum range; '
+    elif error & 1 << 2:
+        message += 'The CCS811 received an I²C request to write an unsupported mode to MEAS_MODE; '
+    elif error & 1 << 1:
+        message += 'The CCS811 received an I²C read request to a mailbox ID that is invalid; '
+    elif error & 1 << 0:
+        message += 'The CCS811 received an I²C write request addressed to this station but with invalid register address ID; '
+
+    return message
 
 def main():
     bus = smbus.SMBus(1)
@@ -54,7 +70,9 @@ def main():
 
         if status & 1:
             print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
+
+
 
 
 
@@ -80,7 +98,10 @@ def main():
 
         if status & 1:
             print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
+
+
+
 
         #Write nothing to APP_START register to set the sensor to
         #change the mode of the CCS811 from Boot mode to running the application
@@ -88,8 +109,6 @@ def main():
         print("")
         print("Starting the app")
         bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
-
-
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
         print("Status report:")
@@ -107,16 +126,11 @@ def main():
 
         if status & 1:
             print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
 
 
-        if status & 1:
-            print("There is an error on the I²C or sensor:")
-            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
-
-
-        print("Confirming the mode:")
-        print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
+        # print("Confirming the mode:")
+        # print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
     except:
         print("Ive done a fuck")
 
@@ -136,7 +150,7 @@ def main():
 
             if value & 1:
                 print("    There is an error on the I²C or sensor after changing to application mode:")
-                print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+                print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
 
 
             value = (value >> 3) & 1
