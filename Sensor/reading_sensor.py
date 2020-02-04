@@ -52,88 +52,84 @@ def main():
     bus = smbus.SMBus(1)
 
     #Startup
-    try:
-        #Recieve the status of the sensor:
-        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        print("Initial status report:")
-        print(status)
-        #Firmware mode:
-        if (status >> 7) & 1:
-            print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
-        else:
-            print("    Firmware is still in boot mode, this allows new firmware to be loaded")
+    #Recieve the status of the sensor:
+    status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+    print("Initial status report:")
+    print(status)
+    #Firmware mode:
+    if (status >> 7) & 1:
+        print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+    else:
+        print("    Firmware is still in boot mode, this allows new firmware to be loaded")
 
-        if (status >> 4) & 1:
-            print("    Valid application firmware loaded")
-        else:
-            print("    No application firmware loaded")
+    if (status >> 4) & 1:
+        print("    Valid application firmware loaded")
+    else:
+        print("    No application firmware loaded")
 
-        if status & 1:
-            print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
-
+    if status & 1:
+        print("    There is an error on the I²C or sensor after changing to application mode:")
+        print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
 
 
 
 
-        print("")
-        print("")
-        print("Setting the mode to constant power mode")
-        bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
-        #Recieve the status of the sensor:
-        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        print("Status report:")
-        print(status)
-        #Firmware mode:
-        if (status >> 7) & 1:
-            print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
-        else:
-            print("    Firmware is still in boot mode, this allows new firmware to be loaded")
 
-        if (status >> 4) & 1:
-            print("    Valid application firmware loaded")
-        else:
-            print("    No application firmware loaded")
+    print("")
+    print("")
+    print("Setting the mode to constant power mode")
+    bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
+    #Recieve the status of the sensor:
+    status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+    status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+    print("Status report:")
+    print(status)
+    #Firmware mode:
+    if (status >> 7) & 1:
+        print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+    else:
+        print("    Firmware is still in boot mode, this allows new firmware to be loaded")
 
-        if status & 1:
-            print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
+    if (status >> 4) & 1:
+        print("    Valid application firmware loaded")
+    else:
+        print("    No application firmware loaded")
+
+    if status & 1:
+        print("    There is an error on the I²C or sensor after changing to application mode:")
+        print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
 
 
 
 
-        #Write nothing to APP_START register to set the sensor to
-        #change the mode of the CCS811 from Boot mode to running the application
-        print("")
-        print("")
-        print("Starting the app")
-        bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
-        #Recieve the status of the sensor:
-        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        print("Status report:")
-        print(status)
-        #Firmware mode:
-        if (status >> 7) & 1:
-            print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
-        else:
-            print("    Firmware is still in boot mode, this allows new firmware to be loaded")
+    #Write nothing to APP_START register to set the sensor to
+    #change the mode of the CCS811 from Boot mode to running the application
+    print("")
+    print("")
+    print("Starting the app")
+    bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
+    #Recieve the status of the sensor:
+    status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+    print("Status report:")
+    print(status)
+    #Firmware mode:
+    if (status >> 7) & 1:
+        print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+    else:
+        print("    Firmware is still in boot mode, this allows new firmware to be loaded")
 
-        if (status >> 4) & 1:
-            print("    Valid application firmware loaded")
-        else:
-            print("    No application firmware loaded")
+    if (status >> 4) & 1:
+        print("    Valid application firmware loaded")
+    else:
+        print("    No application firmware loaded")
 
-        if status & 1:
-            print("    There is an error on the I²C or sensor after changing to application mode:")
-            print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
+    if status & 1:
+        print("    There is an error on the I²C or sensor after changing to application mode:")
+        print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
 
 
         # print("Confirming the mode:")
         # print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
-    except exc:
-        print("Ive done a fuck")
-        print(exc)
 
     while True:
         try:
