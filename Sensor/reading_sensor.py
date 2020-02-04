@@ -59,13 +59,17 @@ def main():
 
         #Write nothing to APP_START register to set the sensor to
         #change the mode of the CCS811 from Boot mode to running the application
-        print("\n\nStarting the app")
+        print("")
+        print("")
+        print("Starting the app")
         bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
 
 
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-        print("\n\nStatus report:")
+        print("")
+        print("")
+        print("Status report:")
         print(status)
         #Firmware mode:
         if (status >> 7) & 1:
