@@ -36,11 +36,33 @@ def main():
 
     #Startup
     try:
+        #Recieve the status of the sensor:
+        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+        print("Initial status report:")
+        print(status)
+        #Firmware mode:
+        if (status >> 7) & 1:
+            print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+        else:
+            print("    Firmware is still in boot mode, this allows new firmware to be loaded")
+
+        if (status >> 4) & 1:
+            print("    Valid application firmware loaded")
+        else:
+            print("    No application firmware loaded")
+
+        if status & 1:
+            print("    There is an error on the I²C or sensor after changing to application mode:")
+            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+
+
+
         #Write nothing to APP_START register to set the sensor to
         #change the mode of the CCS811 from Boot mode to running the application
         print("Starting the app")
         bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
         time.sleep(1.02)
+
 
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
