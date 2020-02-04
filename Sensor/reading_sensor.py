@@ -104,6 +104,19 @@ def main():
         try:
             value = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
             print(value)
+            if (status >> 7) & 1:
+                print("    Firmware is in application mode. CCS811 is ready to take ADC measurements")
+            else:
+                print("    Firmware is still in boot mode, this allows new firmware to be loaded")
+    
+            if (status >> 4) & 1:
+                print("    Valid application firmware loaded")
+            else:
+                print("    No application firmware loaded")
+
+            if status & 1:
+                print("    There is an error on the I²C or sensor after changing to application mode:")
+                print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
             value = (value >> 3) & 1
             if value :
                 x = bus.read_word_data(addr,0x02)
