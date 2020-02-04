@@ -49,20 +49,20 @@ def main():
         else:
             print("Firmware is still in boot mode, this allows new firmware to be loaded")
             print('exiting...')
-            break
+            quit()
 
         if (status >> 4) & 1:
             print("Valid application firmware loaded")
         else:
             print("No application firmware loaded")
             print('exiting...')
-            break
+            quit()
 
         if status & 1:
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
             print('exiting...')
-            break
+            quit()
 
 
 
@@ -74,7 +74,7 @@ def main():
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
             print('exiting...')
-            break
+            quit()
 
 
         print("Confirming the mode:")
