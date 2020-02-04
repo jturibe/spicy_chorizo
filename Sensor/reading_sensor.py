@@ -40,6 +40,7 @@ def main():
         #change the mode of the CCS811 from Boot mode to running the application
         print("Starting the app")
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, 0x0, CSS811_APP_START)
+        time.sleep(1.02)
 
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
@@ -54,14 +55,12 @@ def main():
         else:
             print("No application firmware loaded")
 
-        print("Hellos?")
         if status & 1:
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
 
 
-
-        print("Setting the mode to:" + CONSTANT_POWER_MODE)
+        print("Setting the mode to constant power mode")
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
