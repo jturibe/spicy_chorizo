@@ -39,7 +39,7 @@ def main():
         #Write nothing to APP_START register to set the sensor to
         #change the mode of the CCS811 from Boot mode to running the application
         print("Starting the app")
-        bus.write_byte_data(CSS811_DEVICE_ADDRESS, 0x0, CSS811_APP_START)
+        bus.write_byte_data(CSS811_DEVICE_ADDRESS, CSS811_APP_START, 0x0)
 
         #Recieve the status of the sensor:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
@@ -68,7 +68,6 @@ def main():
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
             print('exiting...')
-            quit()
 
 
         print("Confirming the mode:")
