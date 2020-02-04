@@ -1,6 +1,6 @@
 # import numpy as np
 import smbus
-from time
+import time
 # import pigpio
 
 # from Adafruit_CCS811 import Adafruit_CCS811
