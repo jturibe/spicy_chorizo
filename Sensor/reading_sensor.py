@@ -33,17 +33,17 @@ CONSTANT_POWER_MODE = 0x10
 def interpret_error(errorcode):
     message = '    Error: '
 
-    if error & 1 << 5:
+    if errorcode & 1 << 5:
         message += 'The Heater voltage is not being applied correctly; '
-    elif error & 1 << 4:
+    elif errorcode & 1 << 4:
         message += 'The Heater current in the CCS811 is not in range; '
-    elif error & 1 << 3:
+    elif errorcode & 1 << 3:
         message += 'The sensor resistance measurement has reached or exceded the maximum range; '
-    elif error & 1 << 2:
+    elif errorcode & 1 << 2:
         message += 'The CCS811 received an I²C request to write an unsupported mode to MEAS_MODE; '
-    elif error & 1 << 1:
+    elif errorcode & 1 << 1:
         message += 'The CCS811 received an I²C read request to a mailbox ID that is invalid; '
-    elif error & 1 << 0:
+    elif errorcode & 1 << 0:
         message += 'The CCS811 received an I²C write request addressed to this station but with invalid register address ID; '
 
     return message
