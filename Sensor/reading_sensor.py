@@ -131,8 +131,9 @@ def main():
 
         # print("Confirming the mode:")
         # print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
-    except:
+    except exc:
         print("Ive done a fuck")
+        print(exc)
 
     while True:
         try:
