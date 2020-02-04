@@ -75,7 +75,7 @@ def main():
 
     #Optional validation:
     bus.write_byte(CSS811_DEVICE_ADDRESS, 0xF3)
-    while true:
+    while True:
         status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
         print("Status report:")
         print(status)
