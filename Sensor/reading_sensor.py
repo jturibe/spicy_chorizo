@@ -48,21 +48,15 @@ def main():
             print("Firmware is in application mode. CCS811 is ready to take ADC measurements")
         else:
             print("Firmware is still in boot mode, this allows new firmware to be loaded")
-            print('exiting...')
-            quit()
 
         if (status >> 4) & 1:
             print("Valid application firmware loaded")
         else:
             print("No application firmware loaded")
-            print('exiting...')
-            quit()
 
         if status & 1:
             print("There is an error on the I²C or sensor:")
             print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
-            print('exiting...')
-            quit()
 
 
 
