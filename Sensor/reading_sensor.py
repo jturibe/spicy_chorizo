@@ -35,8 +35,8 @@ def main():
     bus = smbus.SMBus(1)
     try:
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
-        print "Ive done a fuck"
-        print err
+    except:
+        print("Ive done a fuck")
 
     while True:
         try:
@@ -49,7 +49,7 @@ def main():
               print(x)
 
         except:
-          print 'exiting...'
+          print('exiting...')
           break
 
 
