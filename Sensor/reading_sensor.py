@@ -33,14 +33,50 @@ CONSTANT_POWER_MODE = 0x10
 
 def main():
     bus = smbus.SMBus(1)
+
+    #Startup
     try:
+        #Write nothing to APP_START register to set the sensor to
+        #change the mode of the CCS811 from Boot mode to running the application
         print("Starting the app")
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, 0x0, CSS811_APP_START)
 
-        print("Setting the mode:")
-        print(CONSTANT_POWER_MODE)
+        #Recieve the status of the sensor:
+        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+        #Firmware mode:
+        if (status >> 7) & 1:
+            print("Firmware is in application mode. CCS811 is ready to take ADC measurements")
+        else:
+            print("Firmware is still in boot mode, this allows new firmware to be loaded")
+            print('exiting...')
+            break
+
+        if (status >> 4) & 1:
+            print("Valid application firmware loaded")
+        else:
+            print("No application firmware loaded")
+            print('exiting...')
+            break
+
+        if status & 1:
+            print("There is an error on the I²C or sensor:")
+            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+            print('exiting...')
+            break
+
+
+
+        print("Setting the mode to:" + CONSTANT_POWER_MODE)
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
-        time.sleep(2)
+        #Recieve the status of the sensor:
+        status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+        if status & 1:
+            print("There is an error on the I²C or sensor:")
+            print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID))
+            print('exiting...')
+            break
+
+
         print("Confirming the mode:")
         print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
     except:
