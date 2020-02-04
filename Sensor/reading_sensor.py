@@ -69,8 +69,9 @@ def main():
         print("    No application firmware loaded")
 
     if status & 1:
-        print("    There is an error on the I²C or sensor after changing to application mode:")
-        print(interpret_error(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)))
+        error = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)
+        print("    There is an error on the I²C or sensor after changing to application mode:", error)
+        print(interpret_error(error))
 
 
     # #Optional validation:
@@ -119,6 +120,7 @@ def main():
         print("    No application firmware loaded")
 
     if status & 1:
+        error = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)
         print("    There is an error on the I²C or sensor after changing to application mode:", error)
         print(interpret_error(error))
 
@@ -145,6 +147,7 @@ def main():
         print("    No application firmware loaded")
 
     if status & 1:
+        error = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)
         print("    There is an error on the I²C or sensor after changing to application mode:", error)
         print(interpret_error(error))
 
@@ -165,6 +168,7 @@ def main():
                 print("    No application firmware loaded")
 
             if value & 1:
+                error = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_ERROR_ID)
                 print("    There is an error on the I²C or sensor after changing to application mode:", error)
                 print(interpret_error(error))
 
