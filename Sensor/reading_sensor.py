@@ -34,7 +34,7 @@ CONSTANT_POWER_MODE = 0x10
 def main():
     bus = smbus.SMBus(1)
     try:
-        print(CSS811_MEAS_MODE)
+        bus.i2c_write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
         time.sleep(2)
         print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
