@@ -35,22 +35,24 @@ def main():
     bus = smbus.SMBus(1)
     try:
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
+        time.sleep(2)
+        print(bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_MEAS_MODE))
     except:
         print("Ive done a fuck")
 
-    while True:
-        try:
-            value = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
-            value = (value >> 3) & 1
-            print(value)
-            if value :
-              x = bus.read_word_data(addr,0x02)
-              time.sleep(1.02)
-              print(x)
-
-        except:
-          print('exiting...')
-          break
+    # while True:
+    #     try:
+    #         value = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
+    #         value = (value >> 3) & 1
+    #         print(value)
+    #         if value :
+    #             x = bus.read_word_data(addr,0x02)
+    #             print(x)
+    #
+    #         time.sleep(1.02)
+    #     except:
+    #         print('exiting...')
+    #         break
 
 
 
