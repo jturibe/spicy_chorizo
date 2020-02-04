@@ -42,7 +42,7 @@ def main():
         try:
             value = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
             value = (value >> 3) & 1
-
+            print(value)
             if value :
               x = bus.read_word_data(addr,0x02)
               time.sleep(1.02)
