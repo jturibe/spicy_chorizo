@@ -37,7 +37,8 @@ def main():
         print("Starting the app")
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, 0x0, CSS811_APP_START)
 
-        print("Setting the mode")
+        print("Setting the mode:")
+        print(CONSTANT_POWER_MODE)
         bus.write_byte_data(CSS811_DEVICE_ADDRESS, CONSTANT_POWER_MODE, CSS811_MEAS_MODE)
         time.sleep(2)
         print("Confirming the mode:")
