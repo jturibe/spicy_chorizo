@@ -82,7 +82,7 @@ def main():
     print("")
     print("")
     print("Starting the app")
-    bus.write_byte(CSS811_DEVICE_ADDRESS, CSS811_APP_START)
+    bus.write_byte_data(CSS811_DEVICE_ADDRESS, 0x0, CSS811_APP_START)
     #Recieve the status of the sensor:
     status = bus.read_byte_data(CSS811_DEVICE_ADDRESS, CSS811_STATUS)
     print("Status report:")
