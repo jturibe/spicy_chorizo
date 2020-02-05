@@ -48,6 +48,9 @@ def interpret_error(errorcode):
 
     return message
 
+
+
+
 def main():
 
     bus = smbus.SMBus(1)
