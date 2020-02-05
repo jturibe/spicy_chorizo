@@ -9,6 +9,6 @@ while True:
     bus.write_byte(0x40, 0xE3)
     time.sleep(2)
     mb, lb = "Temperature: ", bus.read_i2c_block_data(0x40, 0xE3, 2)
-    mb = mb << 8
-    temp = (mb + lb)*175.72 / 65536 - 46.85
+    mb = int(mb) << 8
+    temp = (mb + int(lb))*175.72 / 65536 - 46.85
     print("Temperature(Celsius): ", temp)
