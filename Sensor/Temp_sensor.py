@@ -8,7 +8,7 @@ bus = smbus.SMBus(1)
 
 client = mqtt.Client()
 client.tls_set(ca_certs="mosquitto.org.crt", certfile="client.crt",keyfile="client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
-con_code = client.connect("test.mosquitto.org",port=1884)
+con_code = client.connect("test.mosquitto.org",port=8884)
 
 if not con_code:
     msg_info = client.publish("IC.embedded/spicy_chorizo/test","hello")
