@@ -10,7 +10,7 @@ client = mqtt.Client()
 con_code = client.connect("test.mosquitto.org",port=1883)
 
 if not con_code:
-    client.publish("IC.embeddedspicy_chorizo/test","hello")
+    client.publish("IC.embedded/spicy_chorizo/test","hello")
 else:
     print(mqtt.error_string(con_code))
 
@@ -37,4 +37,4 @@ while True:
       "humidity": hum_out
     }
 
-    message = json.dump(thisdict)
+    message = json.dumps(thisdict)
