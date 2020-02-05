@@ -31,7 +31,7 @@ while True:
     print("Temperature(Celsius): ", temp)
 
 
-    hum_out = float(hmb)
+    hum_out = float(hum)
     temp_out = float(temp)
 
     thisdict = {
