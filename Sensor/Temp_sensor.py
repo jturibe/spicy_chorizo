@@ -39,3 +39,5 @@ while True:
     }
 
     message = json.dumps(thisdict)
+    msg_info = client.publish("IC.embedded/spicy_chorizo/test", message)
+    print("Message published:", mqtt.error_string(msg_info.rc))
