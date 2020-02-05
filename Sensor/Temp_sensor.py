@@ -11,6 +11,7 @@ con_code = client.connect("test.mosquitto.org",port=1883)
 
 if not con_code:
     client.publish("IC.embedded/spicy_chorizo/test","hello")
+    print(mqtt.error_string(MSG_INFO.rc))
 else:
     print(mqtt.error_string(con_code))
 
