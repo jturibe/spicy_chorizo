@@ -17,6 +17,7 @@ else:
     print(mqtt.error_string(con_code))
 
 while True:
+    #-----------Temperature and Humidity ------------------
     bus.write_byte(0x40, 0xE5)
     time.sleep(5)
     hmb, hlb = bus.read_i2c_block_data(0x40, 0xE5,2)
@@ -29,10 +30,19 @@ while True:
     mb = mb << 8
     temp = (mb + lb)*175.72 / 65536 - 46.85
     print("Temperature(Celsius): ", temp)
-
-
     hum_out = float(hum)
     temp_out = float(temp)
+
+
+
+    #------------------Light--------------------------------------
+    bus.write_byte(0x29, 0x8C)
+    light_LSB = bus.read_byte(0x29, 0xC)
+    light_MSB = bus.read_byte(0x29, 0xD)
+
+    light_MSB = light_MSB << 8
+    light = int(light_MSB + light_LSB)
+    print("Light: ", light)
 
     thisdict = {
       "temperature": temp_out,
