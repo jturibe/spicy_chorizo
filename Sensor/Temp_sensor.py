@@ -36,9 +36,9 @@ while True:
 
 
     #------------------Light--------------------------------------
-    bus.write_byte(0x29, 0x8C)
-    light_LSB = bus.read_byte(0x29, 0xC)
-    light_MSB = bus.read_byte(0x29, 0xD)
+    bus.write_byte(0x39, 0x8C)
+    light_LSB = bus.read_byte(0x39, 0xC)
+    light_MSB = bus.read_byte(0x39, 0xD)
 
     light_MSB = light_MSB << 8
     light = int(light_MSB + light_LSB)
