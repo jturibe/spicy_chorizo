@@ -17,7 +17,7 @@ else:
     print(mqtt.error_string(con_code))
 
 #power on light sensor:
-bus.write_byte(0x39, 0x00)
+bus.write_byte(0x39, 0x80)
 bus.write_byte(0x39, 0x3)
 while True:
     #-----------Temperature and Humidity ------------------
