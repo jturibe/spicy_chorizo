@@ -15,8 +15,8 @@
         android:roundIcon="@mipmap/bodego_logo_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".WineActivity">
-            android:parentActivityName=".HomeActivity"</activity>
+        <activity android:name=".WineActivity"
+            android:parentActivityName=".HomeActivity" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +25,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity"></activity>
+
+        <service
+            android:name=".EmergencyFirebaseMessage"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="preloaded_fonts"
