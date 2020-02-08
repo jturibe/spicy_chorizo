@@ -74,7 +74,7 @@
         tools:fontFamily="sans-serif-thin" />
 
     <TextView
-        android:id="@+id/temperature:2"
+        android:id="@+id/humTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="150sp"

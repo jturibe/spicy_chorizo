@@ -112,7 +112,7 @@
         android:adjustViewBounds="true"
         android:backgroundTint="#FFFFFF"
         android:scaleType="fitCenter"
-        app:srcCompat="@drawable/settings_icon"
+        android:src="@drawable/settings_icon"
         android:contentDescription="TODO" />
 
 </RelativeLayout>
