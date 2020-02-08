@@ -15,16 +15,20 @@
         android:roundIcon="@mipmap/bodego_logo_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity
-            android:name=".Splash">
+        <activity android:name=".WineActivity">
+            android:parentActivityName=".HomeActivity"</activity>
+        <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity"> </activity>
+        <activity android:name=".HomeActivity"></activity>
 
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

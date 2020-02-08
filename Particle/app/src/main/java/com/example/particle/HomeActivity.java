@@ -1,10 +1,11 @@
 package com.example.particle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,10 +18,20 @@ import static android.content.ContentValues.TAG;
 
 public class HomeActivity extends Activity {
 
+    ImageButton settingsButton;
+
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         basicReadWrite();
+        settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, WineActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void basicReadWrite() {
