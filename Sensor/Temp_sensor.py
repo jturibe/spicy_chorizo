@@ -17,12 +17,11 @@ else:
     print(mqtt.error_string(con_code))
 
 #power on light sensor:
-bus.write_byte(0x39, 0x00)
+bus.write_byte(0x39, 0x80)
 bus.write_byte(0x39, 0x3)
 while True:
     #-----------Temperature and Humidity ------------------
     bus.write_byte(0x40, 0xE5)
-    time.sleep(5)
     hmb, hlb = bus.read_i2c_block_data(0x40, 0xE5,2)
     hmb = hmb << 8
     hum = 125*(hmb + hlb) / 65536 - 6
@@ -50,9 +49,12 @@ while True:
 
     thisdict = {
       "temperature": temp_out,
-      "humidity": hum_out
+      "humidity": hum_out,
+      "light": light
     }
 
     message = json.dumps(thisdict)
     msg_info = client.publish("IC.embedded/spicy_chorizo/test", message)
     print("Message published:", mqtt.error_string(msg_info.rc))
+
+    time.sleep(60)
