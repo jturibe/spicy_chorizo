@@ -19,6 +19,7 @@ firebase_admin.initialize_app(cred, {
 
 now = datetime.datetime.now()
 last_hour = now.hour
+print(last_hour)
 last_day = now.weekday()
 
 
@@ -272,8 +273,8 @@ def on_message(client, userdata, message):
     cur_day = now.weekday()
 
     print('test')
-    print(cur_hour)
-    print(last_hour)
+    print('cur_hour:', cur_hour)
+    print('last_hour', last_hour)
     print(cur_day)
     print(last_day)
 
