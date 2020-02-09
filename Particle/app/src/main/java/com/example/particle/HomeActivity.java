@@ -35,7 +35,7 @@ public class HomeActivity extends Activity {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, WineActivity.class);
+                Intent intent = new Intent(HomeActivity.this, displaySettings.class);
                 startActivity(intent);
             }
         });
@@ -102,3 +102,5 @@ public class HomeActivity extends Activity {
     }
 
 }
+
+
