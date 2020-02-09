@@ -22,7 +22,7 @@ public class displaySettings extends Activity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(displaySettings.this, settings.class);
+                Intent intent = new Intent(displaySettings.this, editSettings.class);
                 startActivity(intent);
             }
         });
