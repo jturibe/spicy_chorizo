@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".settings">-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -29,47 +21,55 @@ android:background="#FFFFFF">
     android:textSize="24sp"
     tools:gravity="center" />
 
-<EditText
-    android:id="@+id/minTempInput"
-    android:layout_width="80dp"
-    android:layout_height="63dp"
-    android:layout_marginTop="170sp"
-    android:ems="10"
-    android:hint="Min."
-    android:inputType="numberSigned"
-    tools:layout_marginLeft="60sp" />
+    <EditText
+        android:id="@+id/minTempInput"
+        android:layout_width="80dp"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="170dp"
+        android:ems="10"
+        android:hint="Min."
+        android:inputType="numberSigned"
+        android:nextFocusDown="@id/maxTempInput"
+        tools:layout_marginLeft="60dp" />
 
-<EditText
-    android:id="@+id/maxTempInput"
-    android:layout_width="80dp"
-    android:layout_height="63dp"
-    android:layout_marginTop="170sp"
-    android:ems="10"
-    android:hint="Max."
-    android:inputType="numberSigned"
-    tools:layout_marginLeft="240sp" />
+    <EditText
+        android:id="@+id/maxTempInput"
+        android:layout_width="80dp"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="170dp"
+        android:ems="10"
+        android:hint="Max."
+        android:inputType="numberSigned"
+        android:nextFocusDown="@id/minHumInput"
+        tools:layout_marginLeft="240dp" />
 
-<TextView
-    android:id="@+id/degreeUnit2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="320sp"
-    android:layout_marginTop="170sp"
-    android:text="°C"
-    android:textColor="#000000"
-    android:textSize="35sp"
-    tools:fontFamily="sans-serif-thin" />
+    <TextView
+        android:id="@+id/degreeUnit2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="320sp"
+        android:layout_marginTop="170sp"
+        android:fontFamily="sans-serif-thin"
+        android:text="°C"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        tools:fontFamily="sans-serif-thin" />
 
-<TextView
-    android:id="@+id/degreeUnit7"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="140sp"
-    android:layout_marginTop="170sp"
-    android:text="°C"
-    android:textColor="#000000"
-    android:textSize="35sp"
-    tools:fontFamily="sans-serif-thin" />
+    <TextView
+        android:id="@+id/degreeUnit7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="140sp"
+        android:layout_marginTop="170sp"
+        android:fontFamily="sans-serif-thin"
+        android:text="°C"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        tools:fontFamily="sans-serif-thin" />
 
 <TextView
     android:id="@+id/slashSymbol1"
@@ -80,7 +80,7 @@ android:background="#FFFFFF">
     android:text="-"
     android:textColor="#000000"
     android:textSize="55sp"
-    tools:fontFamily="sans-serif-thin" />
+    android:fontFamily="sans-serif-thin" />
 
 <TextView
     android:id="@+id/humTextView"
@@ -95,47 +95,55 @@ android:background="#FFFFFF">
     android:textSize="24sp"
     tools:gravity="center" />
 
-<EditText
-    android:id="@+id/minHumInput"
-    android:layout_width="80dp"
-    android:layout_height="63dp"
-    android:layout_marginTop="300sp"
-    android:ems="10"
-    android:hint="Min."
-    android:inputType="numberSigned"
-    tools:layout_marginLeft="60sp" />
+    <EditText
+        android:id="@+id/minHumInput"
+        android:layout_width="80dp"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:hint="Min."
+        android:inputType="numberSigned"
+        android:nextFocusDown="@id/maxHumInput"
+        tools:layout_marginLeft="60dp" />
 
-<EditText
-    android:id="@+id/maxHumInput"
-    android:layout_width="80dp"
-    android:layout_height="63dp"
-    android:layout_marginTop="300sp"
-    android:ems="10"
-    android:hint="Max."
-    android:inputType="numberSigned"
-    tools:layout_marginLeft="240sp" />
+    <EditText
+        android:id="@+id/maxHumInput"
+        android:layout_width="80dp"
+        android:layout_height="63dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="240dp"
+        android:layout_marginTop="300dp"
+        android:ems="10"
+        android:hint="Max."
+        android:inputType="numberSigned"
+        android:nextFocusDown="@+id/submitButton"
+        tools:layout_marginLeft="240dp" />
 
-<TextView
-    android:id="@+id/percentageSymbol1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="145sp"
-    android:layout_marginTop="300sp"
-    android:text="%"
-    android:textColor="#000000"
-    android:textSize="35sp"
-    tools:fontFamily="sans-serif-thin" />
+    <TextView
+        android:id="@+id/percentageSymbol1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="145sp"
+        android:layout_marginTop="300sp"
+        android:fontFamily="sans-serif-thin"
+        android:text="%"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        tools:fontFamily="sans-serif-thin" />
 
-<TextView
-    android:id="@+id/percentageSymbol2"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="325sp"
-    android:layout_marginTop="300sp"
-    android:text="%"
-    android:textColor="#000000"
-    android:textSize="35sp"
-    tools:fontFamily="sans-serif-thin" />
+    <TextView
+        android:id="@+id/percentageSymbol2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="325sp"
+        android:layout_marginTop="300sp"
+        android:fontFamily="sans-serif-thin"
+        android:text="%"
+        android:textColor="#000000"
+        android:textSize="35sp"
+        tools:fontFamily="sans-serif-thin" />
 
 <TextView
     android:id="@+id/slashSymbol2"
@@ -146,31 +154,31 @@ android:background="#FFFFFF">
     android:text="-"
     android:textColor="#000000"
     android:textSize="55sp"
-    tools:fontFamily="sans-serif-thin" />
+    android:fontFamily="sans-serif-thin" />
 
-<Button
-    android:id="@+id/submitButton"
-    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-    android:layout_width="205dp"
-    android:layout_height="59dp"
-    android:layout_marginLeft="100sp"
-    android:layout_marginTop="500sp"
-    android:backgroundTint="#FFFFFF"
-    android:backgroundTintMode="multiply"
-    android:fontFamily="serif"
-    android:text="SUBMIT"
-    android:textColor="#000000"
-    android:textSize="30sp"
-    tools:fontFamily="sans-serif-light" />
-
-<Button
+    <Button
     android:id="@+id/advancedSettingsButton"
     style="@style/Widget.AppCompat.Button.Borderless"
     android:layout_width="172dp"
     android:layout_height="58dp"
-    android:layout_marginLeft="120sp"
-    android:layout_marginTop="410sp"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="120dp"
+    android:layout_marginLeft="120dp"
+    android:layout_marginTop="410dp"
     android:text="Advanced Settings"
     android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/submitButton"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="207dp"
+        android:layout_height="61dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="500dp"
+        android:fontFamily="sans-serif-light"
+        android:text="SUBMIT"
+        android:textSize="30sp" />
 
 </RelativeLayout>

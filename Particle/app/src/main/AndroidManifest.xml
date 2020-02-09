@@ -15,9 +15,12 @@
         android:roundIcon="@mipmap/bodego_logo_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity android:name=".displaySettings"
+            android:parentActivityName=".HomeActivity" />
 
-        <activity android:name=".settings"
-            android:parentActivityName=".HomeActivity"/>
+        <activity
+            android:name=".settings"
+            android:parentActivityName=".displaySettings"/>
 
         <activity android:name=".Splash">
             <intent-filter>
@@ -27,10 +30,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity"
+            android:parentActivityName=".settings">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
         </activity>
 
         <service
