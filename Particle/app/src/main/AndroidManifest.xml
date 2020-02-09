@@ -15,8 +15,10 @@
         android:roundIcon="@mipmap/bodego_logo_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-        <activity android:name=".WineActivity"
-            android:parentActivityName=".HomeActivity" />
+
+        <activity android:name=".settings"
+            android:parentActivityName=".HomeActivity"/>
+
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,11 +26,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <activity android:name=".HomeActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-        </intent-filter>
-    </activity>
+
+        <activity android:name=".HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".EmergencyFirebaseMessage"

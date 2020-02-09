@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".settings">-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#FFFFFF">
+
+<TextView
+    android:id="@+id/tempTextView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="135sp"
+    android:layout_marginTop="120sp"
+    android:fontFamily="sans-serif-thin"
+    android:gravity="center"
+    android:text="Temperature:"
+    android:textColor="#000000"
+    android:textSize="24sp"
+    tools:gravity="center" />
+
+<EditText
+    android:id="@+id/minTempInput"
+    android:layout_width="80dp"
+    android:layout_height="63dp"
+    android:layout_marginTop="170sp"
+    android:ems="10"
+    android:hint="Min."
+    android:inputType="numberSigned"
+    tools:layout_marginLeft="60sp" />
+
+<EditText
+    android:id="@+id/maxTempInput"
+    android:layout_width="80dp"
+    android:layout_height="63dp"
+    android:layout_marginTop="170sp"
+    android:ems="10"
+    android:hint="Max."
+    android:inputType="numberSigned"
+    tools:layout_marginLeft="240sp" />
+
+<TextView
+    android:id="@+id/degreeUnit2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="320sp"
+    android:layout_marginTop="170sp"
+    android:text="°C"
+    android:textColor="#000000"
+    android:textSize="35sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<TextView
+    android:id="@+id/degreeUnit7"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="140sp"
+    android:layout_marginTop="170sp"
+    android:text="°C"
+    android:textColor="#000000"
+    android:textSize="35sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<TextView
+    android:id="@+id/slashSymbol1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="200sp"
+    android:layout_marginTop="155sp"
+    android:text="-"
+    android:textColor="#000000"
+    android:textSize="55sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<TextView
+    android:id="@+id/humTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="150sp"
+    android:layout_marginTop="250sp"
+    android:fontFamily="sans-serif-thin"
+    android:gravity="center"
+    android:text="Humidity:"
+    android:textColor="#000000"
+    android:textSize="24sp"
+    tools:gravity="center" />
+
+<EditText
+    android:id="@+id/minHumInput"
+    android:layout_width="80dp"
+    android:layout_height="63dp"
+    android:layout_marginTop="300sp"
+    android:ems="10"
+    android:hint="Min."
+    android:inputType="numberSigned"
+    tools:layout_marginLeft="60sp" />
+
+<EditText
+    android:id="@+id/maxHumInput"
+    android:layout_width="80dp"
+    android:layout_height="63dp"
+    android:layout_marginTop="300sp"
+    android:ems="10"
+    android:hint="Max."
+    android:inputType="numberSigned"
+    tools:layout_marginLeft="240sp" />
+
+<TextView
+    android:id="@+id/percentageSymbol1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="145sp"
+    android:layout_marginTop="300sp"
+    android:text="%"
+    android:textColor="#000000"
+    android:textSize="35sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<TextView
+    android:id="@+id/percentageSymbol2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="325sp"
+    android:layout_marginTop="300sp"
+    android:text="%"
+    android:textColor="#000000"
+    android:textSize="35sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<TextView
+    android:id="@+id/slashSymbol2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="200sp"
+    android:layout_marginTop="290sp"
+    android:text="-"
+    android:textColor="#000000"
+    android:textSize="55sp"
+    tools:fontFamily="sans-serif-thin" />
+
+<Button
+    android:id="@+id/submitButton"
+    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+    android:layout_width="205dp"
+    android:layout_height="59dp"
+    android:layout_marginLeft="100sp"
+    android:layout_marginTop="500sp"
+    android:backgroundTint="#FFFFFF"
+    android:backgroundTintMode="multiply"
+    android:fontFamily="serif"
+    android:text="SUBMIT"
+    android:textColor="#000000"
+    android:textSize="30sp"
+    tools:fontFamily="sans-serif-light" />
+
+<Button
+    android:id="@+id/advancedSettingsButton"
+    style="@style/Widget.AppCompat.Button.Borderless"
+    android:layout_width="172dp"
+    android:layout_height="58dp"
+    android:layout_marginLeft="120sp"
+    android:layout_marginTop="410sp"
+    android:text="Advanced Settings"
+    android:textSize="16sp" />
+
+</RelativeLayout>
