@@ -16,7 +16,7 @@ cred = credentials.Certificate("Firebase/spicychorizo-794f1-firebase-adminsdk-dc
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://spicychorizo-794f1.firebaseio.com'
 })
-
+print("Chicken")
 send_to_topic()
 
 """now = datetime.datetime.now()
