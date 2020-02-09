@@ -31,7 +31,7 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         FirebaseMessaging.getInstance().subscribeToTopic("emergency_updates");
         updateStats();
-        settingsButton = (ImageButton) findViewById(R.id.settingsButton);
+        settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +65,40 @@ public class HomeActivity extends Activity {
             }
         });
 
+        humidRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = Integer.toString((int) Math.round(dataSnapshot.getValue(Double.class)));
+                TextView humidity= findViewById(R.id.current_humidity);
+                String hum_text = value + "%";
+                humidity.setText(hum_text);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+        lightRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = Integer.toString((int) Math.round(dataSnapshot.getValue(Double.class)));
+                TextView lighting= findViewById(R.id.current_light);
+                String light_text = value;
+                lighting.setText(light_text);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
 }
