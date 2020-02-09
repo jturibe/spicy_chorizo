@@ -78,6 +78,7 @@ def average_hour_graph(hour, day): #current hour, day of today
     plot = plt.plot(xi, graph_data, linestyle='-', marker='o')
     plt.xticks(xi, graph_labels)
     plt.savefig('test.png')
+    plt.clf()
 
 #Calculate the average value for the hour
 def average_hour(hour, day):
@@ -464,7 +465,7 @@ def on_message(client, userdata, message):
     ref.child('humidity').update({cur_minute: cur_humidity})
     ref.child('temperature').update({cur_minute: cur_temperature})
 
-    # average_hour_graph(cur_hour, cur_day)
+    average_hour_graph(cur_hour, cur_day)
 
     last_hour = cur_hour
     last_day = cur_day
@@ -487,5 +488,7 @@ client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
 # flood_database()
 # initialise_averages()
+# average_hour_graph(last_hour, last_day)
+average_hour(last_hour, last_day)
 client.loop_forever() ##blocks for 100ms
 print("Done")"""

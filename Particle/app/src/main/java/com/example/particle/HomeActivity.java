@@ -31,7 +31,7 @@ public class HomeActivity extends Activity {
         setContentView(R.layout.activity_home);
         FirebaseMessaging.getInstance().subscribeToTopic("emergency_updates");
         updateStats();
-        settingsButton = findViewById(R.id.settingsButton);
+        settingsButton = (ImageButton) findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
