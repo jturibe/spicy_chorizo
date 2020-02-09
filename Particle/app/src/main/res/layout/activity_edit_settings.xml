@@ -68,12 +68,11 @@
                         android:id="@+id/minTempInput"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:hint="Min."
-                        android:textSize="25dp"
                         android:fontFamily="sans-serif-light"
+                        android:hint="Min."
                         android:inputType="numberSigned"
-                        android:nextFocusDown="@id/maxTempInput">
-                    </EditText>
+                        android:nextFocusDown="@id/maxTempInput"
+                        android:textSize="25dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -231,6 +230,18 @@
     </androidx.cardview.widget.CardView>
 
     <Button
+        android:id="@+id/advancedSettingsButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="172dp"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/advancedsettingstext"
+        android:textSize="16sp" />
+
+    <Button
         android:id="@+id/submitButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="207dp"
@@ -238,7 +249,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="100dp"
         android:layout_marginLeft="100dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/buttonbackground"
         android:enabled="false"
         android:fontFamily="sans-serif-thin"
