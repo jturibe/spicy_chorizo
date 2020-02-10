@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".displaySettings"
+    android:background="#EFF0F1">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="30dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="Temperature"
+                    android:textColor="#000000"
+                    android:textSize="30dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:text="New Settings"
+                    android:textSize="18dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textColor="#D3000000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/minTempInput"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Min."
+                        android:inputType="numberSigned"
+                        android:nextFocusDown="@id/maxTempInput"
+                        android:textSize="25dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ºC"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/maxTempInput"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:hint="Max."
+                        android:textSize="25dp"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="numberSigned"
+                        android:nextFocusDown="@id/minHumInput"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ºC"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="Humidity"
+                    android:textColor="#000000"
+                    android:textSize="30dp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:text="New Settings"
+                    android:textSize="18dp"
+                    android:fontFamily="sans-serif-thin"
+                    android:textColor="#D3000000"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/minHumInput"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:hint="Min."
+                        android:textSize="25dp"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="numberSigned"
+                        android:nextFocusDown="@id/maxHumInput">
+                    </EditText>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                    <TextView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:gravity="center"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                    <EditText
+                        android:id="@+id/maxHumInput"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:hint="Max."
+                        android:textSize="25dp"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="numberSigned"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="%"
+                        android:fontFamily="sans-serif-thin"
+                        android:textSize="35dp"
+                        android:textColor="#000000"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/advancedSettingsButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="172dp"
+        android:layout_height="58dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/advancedsettingstext"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/submitButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="207dp"
+        android:layout_height="61dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/buttonbackground"
+        android:enabled="false"
+        android:fontFamily="sans-serif-thin"
+        android:text="SUBMIT"
+        android:textColor="@drawable/buttontextcolour"
+        android:textSize="30sp" />
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
