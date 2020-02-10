@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".displaySettings"
-    android:background="#EFF0F1">
+    android:background="#4D071D">
 
 
     <androidx.cardview.widget.CardView
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#FFFFFF">
+            android:background="#660F29">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                         android:text="Temperature"
                         android:textSize="30dp"
                         android:fontFamily="sans-serif-thin"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                         android:text="Current Settings"
                         android:textSize="18dp"
                         android:fontFamily="sans-serif-thin"
-                        android:textColor="#D3000000"/>
+                        android:textColor="#FFFFFF"/>
 
 
                 </LinearLayout>
@@ -84,7 +84,7 @@
                     android:text="10"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
                     android:text="ºC"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="30dp"
@@ -101,7 +101,7 @@
                     android:gravity="center"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,7 +109,7 @@
                     android:text="25"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
                     android:text="ºC"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
 
             </LinearLayout>
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#FFFFFF">
+            android:background="#660F29">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                         android:text="Humidity"
                         android:textSize="30dp"
                         android:fontFamily="sans-serif-thin"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,7 +169,7 @@
                         android:text="Current Settings"
                         android:textSize="18dp"
                         android:fontFamily="sans-serif-thin"
-                        android:textColor="#D3000000"/>
+                        android:textColor="#FFFFFF"/>
 
 
                 </LinearLayout>
@@ -203,7 +203,7 @@
                     android:text="10"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -211,7 +211,7 @@
                     android:text="%"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="30dp"
@@ -220,7 +220,7 @@
                     android:gravity="center"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -228,7 +228,7 @@
                     android:text="25"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,7 +236,7 @@
                     android:text="%"
                     android:fontFamily="sans-serif-thin"
                     android:textSize="35dp"
-                    android:textColor="#000000"/>
+                    android:textColor="#FFFFFF"/>
 
 
             </LinearLayout>
