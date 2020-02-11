@@ -148,8 +148,9 @@ def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today,
     plt.clf()
     with open("average_hour_graph_temp.png", "rb") as img_file:
         image_string = base64.b64encode(img_file.read())
-    ref_average_hour_graph_temp = db.reference('/graphs/average_hour_graph')
-    ref_average_hour_graph_temp.update({'temp_image': str(image_string)})
+
+    ref_average_hour_graph_temp = db.reference('/graphs_temp')
+    ref_average_hour_graph_temp.update({'average_hour_graph': image_string.decode()})
 
 def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, upper_range, lower_range): #current hour, day of today
     # ref_today =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
@@ -213,11 +214,13 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     axes = plt.gca()
     axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
     seaborn.despine(left=True, bottom=True, right=True)
-    plt.savefig('test_hum.png')
+    plt.savefig("average_hour_graph_hum.png")
     plt.clf()
+    with open("average_hour_graph_hum.png", "rb") as img_file:
+        image = base64.b64encode(img_file.read())
 
-
-
+    ref_average_hour_graph_temp = db.reference('/graphs_hum')
+    ref_average_hour_graph_temp.update({'average_hour_graph': image_string.decode()})
 
 
 
@@ -595,12 +598,12 @@ else:
 
 client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
-# flood_database()
-# initialise_averages()
-# average_hour_graph(last_hour, last_day)
+flood_database()
+initialise_averages()
+average_hour_graph(last_hour, last_day)
 
-# average_hour_over_day()
-# update_hour_graphs(last_hour, last_day)
+average_hour_over_day()
+update_hour_graphs(last_hour, last_day)
 
 client.loop_forever() ##blocks for 100ms
 print("Done")
@@ -609,5 +612,5 @@ print("Done")
 # lower_range = 18
 # yesterday = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
 # today = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
-# average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
-# average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
+average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
+average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
