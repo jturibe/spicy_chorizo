@@ -102,9 +102,11 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/temp_panel"
                             android:layout_width="match_parent"
                             android:layout_height="112dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:clickable="true">
 
                             <RelativeLayout
                                 android:layout_width="40dp"
@@ -178,10 +180,12 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/hum_panel"
                             android:layout_width="match_parent"
                             android:layout_height="112dp"
                             android:orientation="horizontal"
-                            android:background="#660F29">
+                            android:background="#660F29"
+                            android:clickable="true">
 
                             <RelativeLayout
                                 android:layout_width="40dp"
