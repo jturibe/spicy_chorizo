@@ -519,8 +519,8 @@ def send_notifications(received_payload):
 
 
 
-    ref = db.reference('/user_settings')
-    settings = ref.get()
+    ref_settings = db.reference('/user_settings')
+    settings = ref_settings.get()
 
     if(settings is None): #If the re is no user settings on the database. In the final
                         #product this would flag a seperate notification saying thet the temperature
@@ -539,7 +539,7 @@ def send_notifications(received_payload):
             notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] - 0.01666666666 #add to percentage of time spent hot
 
 
-        if (notif_data_temp['last_trend_notified'] - time.time()) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+        if (time.time() - notif_data_temp['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
             if(notif_data_temp['trend_high_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
                 topic = "event_updates"
                 message = messaging.Message(
@@ -549,7 +549,7 @@ def send_notifications(received_payload):
                     ),
                     topic=topic,
                 )
-
+                response = messaging.send(message)
                 notif_data_temp['last_trend_notified'] = time.time()
 
 
@@ -562,7 +562,7 @@ def send_notifications(received_payload):
             notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] - 0.01666666666 #add to percentage of time spent hot
 
 
-        if (notif_data_temp['last_trend_notified'] - time.time()) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
             if(notif_data_temp['trend_low_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
                 topic = "event_updates"
                 message = messaging.Message(
@@ -572,7 +572,7 @@ def send_notifications(received_payload):
                     ),
                     topic=topic,
                 )
-
+                response = messaging.send(message)
                 notif_data_temp['last_trend_notified'] = time.time()
 
     else:
@@ -594,7 +594,7 @@ def send_notifications(received_payload):
             notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] - 0.01666666666 #take away from percentage of time spent too dry
 
 
-        if (notif_data_hum['last_trend_notified'] - time.time()) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
             if(notif_data_hum['trend_high_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
                 topic = "event_updates"
                 message = messaging.Message(
@@ -604,7 +604,7 @@ def send_notifications(received_payload):
                     ),
                     topic=topic,
                 )
-
+                response = messaging.send(message)
                 notif_data_hum['last_trend_notified'] = time.time()
 
 
@@ -617,7 +617,7 @@ def send_notifications(received_payload):
             notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] - 0.01666666666 #take away from percentage of time spent too moist
 
 
-        if (notif_data_hum['last_trend_notified'] - time.time()) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
             if(notif_data_hum['trend_low_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
                 topic = "event_updates"
                 message = messaging.Message(
@@ -627,7 +627,7 @@ def send_notifications(received_payload):
                     ),
                     topic=topic,
                 )
-
+                response = messaging.send(message)
                 notif_data_hum['last_trend_notified'] = time.time()
 
     else:
@@ -762,7 +762,7 @@ client.subscribe("IC.embedded/spicy_chorizo/#")
 # send_notifications({'light' :20,
 #                     'temperature': 21,
 #                     'humidity': 22})
-client.loop_forever() ##blocks for 100ms
+client.loop_forever()
 print("Done")
 
 # upper_range = 27
