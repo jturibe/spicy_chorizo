@@ -11,7 +11,7 @@ from firebase_admin import credentials
 from firebase_admin import messaging
 import matplotlib.pyplot  as plt
 import seaborn
-
+import base64
 # Connect to Firebase
 cred = credentials.Certificate("Firebase/spicychorizo-794f1-firebase-adminsdk-dckj3-acd1fd6dc2.json")
 firebase_admin.initialize_app(cred, {
@@ -19,20 +19,25 @@ firebase_admin.initialize_app(cred, {
 })
 
 now = datetime.datetime.now()
-last_hour = now.hour
+last_hour = 20
 last_day = now.weekday()
 
+
+ #######################################################################################################
+ #-----------------------------Helper functions--------------------------------------------------------
+ #######################################################################################################
 def list_to_dict(raw_data):
+    if raw_data is None:
+        return {}
     if type(raw_data) == type({}):
         return raw_data
     dict = {}
     for i in range(len(raw_data)):
         if raw_data[i] != None:
-            dict[str(i)] = raw_data[i]
+            if not np.isnan(raw_data[i]):
+                dict[str(i)] = raw_data[i]
 
     return dict
-
-
 
 def filter_none(lst):
     res = []
@@ -41,13 +46,48 @@ def filter_none(lst):
             res.append(val)
     return res
 
+
+
+
+
+ #######################################################################################################
+ #-----------------------------Graph creation--------------------------------------------------------
+ #######################################################################################################
+
+def update_hour_graphs(cur_hour, cur_day):
+
+    ref = db.reference('/l_week/hour_AVG/weekday_' + str(cur_day))
+    #Retreive data from Firebase
+    humidity_values_today = ref.child('humidity').get()
+    temperature_values_today = ref.child('temperature').get()
+    humidity_values_today = list_to_dict(humidity_values_today)
+    temperature_values_today = list_to_dict(temperature_values_today)
+
+    ref = db.reference('/l_week/hour_AVG/weekday_' + str((cur_day-1)%7))
+    #Retreive data from Firebase
+    humidity_values_yesterday = ref.child('humidity').get()
+    temperature_values_yesterday = ref.child('temperature').get()
+    humidity_values_yesterday = list_to_dict(humidity_values_yesterday)
+    temperature_values_yesterday = list_to_dict(temperature_values_yesterday)
+
+    ref = db.reference('/user_settings')
+    settings = ref.get()
+    if(settings is None):
+        settings = { 'humidity_max' : 30,
+                     'humidity_min' : 10,
+                     'temperature_max' : 30,
+                     'temperature_min' : 5
+        }
+
+    average_hour_graph_temp(cur_hour, cur_day, temperature_values_yesterday, temperature_values_today, settings['temperature_max'], settings['temperature_min'])
+    average_hour_graph_hum(cur_hour, cur_day, humidity_values_yesterday, humidity_values_today, settings['humidity_max'], settings['humidity_min'])
+
 def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today, upper_range, lower_range): #current hour, day of today
     # ref_today =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
     # ref_yesterday = db.reference('/l_week/hour_AVG/weekday_' + str((day-1)%7))
     #
     # light_values_today = ref_today.child('light').get()
     # light_values_yesterday = ref_yesterday.child('light').get()
-    print(hour)
     graph_labels = []
     graph_data = []
     # graph_data[:,:] = np.NaN
@@ -89,24 +129,27 @@ def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today,
     time_labels = []
     for tick in allowed_ticks:
         time_labels.append(graph_labels[tick])
-    print(graph_labels, graph_data)
-    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#4D071D',linewidth=1.25)
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
     plt.xticks(allowed_ticks, time_labels)
     plt.locator_params(axis='x', nbins=24)
-    plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.25)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.5)
 
     upper_array = [upper_range]*24
     lower_array = [lower_range]*24
     upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
-    upper = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
-
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
     plt.ylabel("Temperature(°C)", fontname="sans-serif", fontweight="light", fontsize="12")
     plt.xlabel("Time(hourly)", fontname="sans-serif", fontweight="light", fontsize="12")
     axes = plt.gca()
-    axes.set_ylim([graph_data[mask].min()*0.8,graph_data[mask].max()*1.2])
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
     seaborn.despine(left=True, bottom=True, right=True)
-    plt.savefig('test.png')
+    plt.savefig('average_hour_graph_temp.png')
     plt.clf()
+    with open("average_hour_graph_temp.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
+    ref_average_hour_graph_temp = db.reference('/graphs/average_hour_graph')
+    ref_average_hour_graph_temp.update({'temp_image': str(image_string)})
 
 def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, upper_range, lower_range): #current hour, day of today
     # ref_today =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
@@ -114,7 +157,6 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     #
     # light_values_today = ref_today.child('light').get()
     # light_values_yesterday = ref_yesterday.child('light').get()
-    print(hour)
     graph_labels = []
     graph_data = []
     # graph_data[:,:] = np.NaN
@@ -156,441 +198,416 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     time_labels = []
     for tick in allowed_ticks:
         time_labels.append(graph_labels[tick])
-    print(graph_labels, graph_data)
-    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#4D071D',linewidth=1.25)
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
     plt.xticks(allowed_ticks, time_labels)
     plt.locator_params(axis='x', nbins=24)
-    plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.25)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.25)
 
     upper_array = [upper_range]*24
     lower_array = [lower_range]*24
     upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
-    upper = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
-
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
     plt.ylabel("Relative Humidity(%)", fontname="sans-serif", fontweight="light", fontsize="12")
     plt.xlabel("Time(hourly)", fontname="sans-serif", fontweight="light", fontsize="12")
     axes = plt.gca()
-    axes.set_ylim([graph_data[mask].min()*0.8,graph_data[mask].max()*1.2])
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
     seaborn.despine(left=True, bottom=True, right=True)
     plt.savefig('test_hum.png')
     plt.clf()
 
-# #Calculate the average value for the hour
-# def average_hour(hour, day):
-#
-#     ref = db.reference('/l_hour/RAW/')
-#
-#     #Retreive RAW data about the last hour from Firebase
-#     light_values = ref.child('light').get()
-#     humidity_values = ref.child('humidity').get()
-#     temperature_values = ref.child('temperature').get()
-#
-#     ref =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
-#
-#     if light_values is not None: #If there is any data
-#         light_values =  light_values.values()   #Extract values
-#         if len(light_values) != 0:              #Honestly just a cautionary check
-#             light_avg = statistics.mean(light_values) #Calculate the average
-#         else:
-#             light_avg = None
-#         ref_light = ref.child('light')
-#         ref_light.update({hour: light_avg})
-#
-#
-#     if humidity_values is not None:
-#         humidity_values = humidity_values.values()
-#         if len(humidity_values) != 0:
-#             humidity_avg = statistics.mean(humidity_values)
-#         else:
-#             humidity_avg = None
-#         ref_humidity = ref.child('humidity')
-#         ref_humidity.update({hour: humidity_avg})
-#
-#
-#     if humidity_values is not None:
-#         temperature_values = temperature_values.values()
-#         if len(temperature_values) != 0:
-#             temperature_avg = statistics.mean(temperature_values)
-#         else:
-#             temperature_avg = None
-#         ref_temperature = ref.child('temperature')
-#         ref_temperature.update({hour: temperature_avg})
-#
-#
-#
-#
-#
-#
-#
-#
-# #Calculate the average value for the day
-# def average_day(day):
-#
-#     ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
-#
-#     #Retreive data from Firebase
-#     light_values = ref.child('light').get()
-#     humidity_values = ref.child('humidity').get()
-#     temperature_values = ref.child('temperature').get()
-#
-#
-#
-#     ref =  db.reference('/l_week/week_AVG')
-#
-#     #Check for None values
-#     if light_values is not None:
-#         light_values =  light_values.values()   #Extract values
-#         if len(light_values) != 0:
-#             light_avg = statistics.mean(light_values)
-#         else:
-#             light_avg = None
-#         ref_light = ref.child('light')
-#         ref_light.update({day: light_avg})
-#
-#
-#     if humidity_values is not None:
-#         humidity_values =  humidity_values.values()   #Extract values
-#         if len(humidity_values) != 0:
-#             humidity_avg = statistics.mean(humidity_values)
-#         else:
-#             humidity_avg = None
-#         ref_humidity = ref.child('humidity')
-#         ref_humidity.update({day: humidity_avg})
-#
-#
-#     if temperature_values is not None:
-#         temperature_values =  temperature_values.values()   #Extract values
-#         #Calculate mean
-#         if len(temperature_values) != 0:
-#             temperature_avg = statistics.mean(temperature_values)
-#         else:
-#             temperature_avg = None
-#         ref_temperature = ref.child('temperature')
-#         ref_temperature.update({day: temperature_avg})
-#
-#
-#
-#
-#
-#
-# #Calculate the average value for every hour over the period of the last week
-# def average_hour_over_day():
-#
-#     week_record = np.empty([3, 7, 24])
-#     week_record[:,:,:] = np.NaN
-#     ref = db.reference('/l_week/hour_AVG')
-#     data = ref.get()
-#
-#     if data is not None:
-#         for day in range(7):
-#             if 'weekday_' + str(day) in data:
-#
-#                 light_values = data['weekday_' + str(day)]['light']
-#                 humidity_values = data['weekday_' + str(day)]['humidity']
-#                 temperature_values = data['weekday_' + str(day)]['temperature']
-#
-#
-#
-#                 for i in range(24):
-#                         if str(i) in light_values:
-#                             week_record[0, day, i] = light_values[str(i)]
-#                         if str(i) in humidity_values:
-#                             week_record[1, day, i] = humidity_values[str(i)]
-#                         if str(i) in temperature_values:
-#                             week_record[2, day, i] = temperature_values[str(i)]
-#
-#         day_hour_avg = np.nanmean(week_record, axis=1)
-#         day_hour_avg = np.nan_to_num(day_hour_avg)
-#
-#         ref = db.reference('/l_week/week_hour_AVG')
-#         ref_light = ref.child('light')
-#         ref_hum = ref.child('humidity')
-#         ref_temp = ref.child('temperature')
-#
-#
-#
-#         ref_light.update ({0: day_hour_avg[0][0],
-#                         1: day_hour_avg[0][1],
-#                         2: day_hour_avg[0][2],
-#                         3: day_hour_avg[0][3],
-#                         4: day_hour_avg[0][4],
-#                         5: day_hour_avg[0][5],
-#                         6: day_hour_avg[0][6],
-#                         7: day_hour_avg[0][7],
-#                         8: day_hour_avg[0][8],
-#                         9: day_hour_avg[0][9],
-#                         10: day_hour_avg[0][10],
-#                         11: day_hour_avg[0][11],
-#                         12: day_hour_avg[0][12],
-#                         13: day_hour_avg[0][13],
-#                         14: day_hour_avg[0][14],
-#                         15: day_hour_avg[0][15],
-#                         16: day_hour_avg[0][16],
-#                         17: day_hour_avg[0][17],
-#                         18: day_hour_avg[0][18],
-#                         19: day_hour_avg[0][19],
-#                         20: day_hour_avg[0][20],
-#                         21: day_hour_avg[0][21],
-#                         22: day_hour_avg[0][22],
-#                         23: day_hour_avg[0][23]})
-#
-#         ref_hum.update ({0: day_hour_avg[1][0],
-#                         1: day_hour_avg[1][1],
-#                         2: day_hour_avg[1][2],
-#                         3: day_hour_avg[1][3],
-#                         4: day_hour_avg[1][4],
-#                         5: day_hour_avg[1][5],
-#                         6: day_hour_avg[1][6],
-#                         7: day_hour_avg[1][7],
-#                         8: day_hour_avg[1][8],
-#                         9: day_hour_avg[1][9],
-#                         10: day_hour_avg[1][10],
-#                         11: day_hour_avg[1][11],
-#                         12: day_hour_avg[1][12],
-#                         13: day_hour_avg[1][13],
-#                         14: day_hour_avg[1][14],
-#                         15: day_hour_avg[1][15],
-#                         16: day_hour_avg[1][16],
-#                         17: day_hour_avg[1][17],
-#                         18: day_hour_avg[1][18],
-#                         19: day_hour_avg[1][19],
-#                         20: day_hour_avg[1][20],
-#                         21: day_hour_avg[1][21],
-#                         22: day_hour_avg[1][22],
-#                         23: day_hour_avg[1][23]})
-#
-#         ref_temp.update ( {0: day_hour_avg[2][0],
-#                         1: day_hour_avg[2][1],
-#                         2: day_hour_avg[2][2],
-#                         3: day_hour_avg[2][3],
-#                         4: day_hour_avg[2][4],
-#                         5: day_hour_avg[2][5],
-#                         6: day_hour_avg[2][6],
-#                         7: day_hour_avg[2][7],
-#                         8: day_hour_avg[2][8],
-#                         9: day_hour_avg[2][9],
-#                         10: day_hour_avg[2][10],
-#                         11: day_hour_avg[2][11],
-#                         12: day_hour_avg[2][12],
-#                         13: day_hour_avg[2][13],
-#                         14: day_hour_avg[2][14],
-#                         15: day_hour_avg[2][15],
-#                         16: day_hour_avg[2][16],
-#                         17: day_hour_avg[2][17],
-#                         18: day_hour_avg[2][18],
-#                         19: day_hour_avg[2][19],
-#                         20: day_hour_avg[2][20],
-#                         21: day_hour_avg[2][21],
-#                         22: day_hour_avg[2][22],
-#                         23: day_hour_avg[2][23]})
-#
-#
-#
-#
-#
-#
-#
-#
-# def flood_database(): #helper function to flood the database with 0
-#
-#     for day in range(7):
-#
-#         ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
-#         ref_light = ref.child('light')
-#         ref_hum = ref.child('humidity')
-#         ref_temp = ref.child('temperature')
-#
-#
-#         ref_light.update({  0: 0,
-#                             1: 0,
-#                             2: 0,
-#                             3: 0,
-#                             4: 0,
-#                             5: 0,
-#                             6: 0,
-#                             7: 0,
-#                             8: 0,
-#                             9: 0,
-#                             10: 0,
-#                             11: 0,
-#                             12: 0,
-#                             13: 0,
-#                             14: 0,
-#                             15: 0,
-#                             16: 0,
-#                             17: 0,
-#                             18: 0,
-#                             19: 0,
-#                             20: 0,
-#                             21: 0,
-#                             22: 0,
-#                             23: 0})
-#
-#
-#         ref_hum.update({    0: 0,
-#                             1: 0,
-#                             2: 0,
-#                             3: 0,
-#                             4: 0,
-#                             5: 0,
-#                             6: 0,
-#                             7: 0,
-#                             8: 0,
-#                             9: 0,
-#                             10: 0,
-#                             11: 0,
-#                             12: 0,
-#                             13: 0,
-#                             14: 0,
-#                             15: 0,
-#                             16: 0,
-#                             17: 0,
-#                             18: 0,
-#                             19: 0,
-#                             20: 0,
-#                             21: 0,
-#                             22: 0,
-#                             23: 0})
-#
-#         ref_temp.update({ 0: 0,
-#                             1: 0,
-#                             2: 0,
-#                             3: 0,
-#                             4: 0,
-#                             5: 0,
-#                             6: 0,
-#                             7: 0,
-#                             8: 0,
-#                             9: 0,
-#                             10: 0,
-#                             11: 0,
-#                             12: 0,
-#                             13: 0,
-#                             14: 0,
-#                             15: 0,
-#                             16: 0,
-#                             17: 0,
-#                             18: 0,
-#                             19: 0,
-#                             20: 0,
-#                             21: 0,
-#                             22: 0,
-#                             23: 0})
-#
-# def send_to_topic():
-#     topic = "emergency_updates"
-#
-#     message = messaging.Message(
-#         notification=messaging.Notification(
-#             title='EMERGENCY',
-#             body='TEMPERATURE IS TOO HOT HOT HOT',
-#         ),
-#         topic=topic,
-#     )
-#
-#     # Send a message to the devices subscribed to the provided topic.
-#     response = messaging.send(message)
-#     # Response is a message ID string.
-#     print('Successfully sent message:', response)
-#     # [END send_to_topic]
-#
-#
-#
-#
-#
-# def initialise_averages():
-#     for day in range(7):
-#         print(day)
-#         average_day(day)
-#
-#
-#
-#
-#
-#
-# def on_message(client, userdata, message):
-#     global last_hour
-#     global last_day
-#     print('Received a message')
-#
-#     now = datetime.datetime.now()
-#     received_payload = json.loads(message.payload)
-#     cur_minute = now.minute
-#     cur_hour = now.hour
-#     cur_day = now.weekday()
-#
-#
-#
-#     if(cur_hour != last_hour):
-#         print('The hour has changed -> Updating averages and graphs')
-#         average_hour(last_hour, last_day)
-#         average_hour_over_day()
-#
-#     if(cur_day != last_day):
-#         print('The day has changed -> Updating averages and graphs')
-#         average_day(last_day)
-#
-#
-#     # print('The hour has changed -> Updating averages and graphs')
-#     # average_hour(last_hour, last_day)
-#     # average_hour_over_day()
-#     # print('The day has changed -> Updating averages and graphs')
-#     # average_day(last_day)
-#     # print('------Done-------')
-#
-#     cur_light = received_payload['light']
-#     cur_humidity = received_payload['humidity']
-#     cur_temperature = received_payload['temperature']
-#
-#     print(received_payload)
-#
-#     #Unpload to current data
-#     ref = db.reference('/current_measurement')
-#     ref.update({
-#         'light': cur_light,
-#         'humidity': cur_humidity,
-#         'temperature': cur_temperature
-#     })
-#
-#
-#     #Unpload to hourly backlog
-#     ref = db.reference('/l_hour/RAW')
-#     ref.child('light').update({cur_minute: cur_light})
-#     ref.child('humidity').update({cur_minute: cur_humidity})
-#     ref.child('temperature').update({cur_minute: cur_temperature})
-#
-#     average_hour_graph(cur_hour, cur_day)
-#
-#     last_hour = cur_hour
-#     last_day = cur_day
-#
-#
-#
-#
-#
-# client = mqtt.Client()
-# client.tls_set(ca_certs="mosquitto.org.crt", certfile="client.crt",keyfile="client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
-# con_code = client.connect("test.mosquitto.org",port=8884)
-#
-# if not con_code:
-#     client.subscribe("IC.embedded/spicy_chorizo/#")
-#     print("Subscribed to IC.embedded/spicy_chorizo/#")
-# else:
-#     print(mqtt.error_string(con_code))
-#
-# client.on_message = on_message
-# client.subscribe("IC.embedded/spicy_chorizo/#")
-# # flood_database()
-# # initialise_averages()
-# # average_hour_graph(last_hour, last_day)
-# average_hour(last_hour, last_day)
-# client.loop_forever() ##blocks for 100ms
-# print("Done")
-today = list_to_dict([None, None, 25, 23, 22, 19, 25, 24, 21, 24])
-yesterday = list_to_dict([20, 22])
-print(today)
-print(yesterday)
-upper_range = 27
-lower_range = 18
-average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
-average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
+
+
+
+
+
+
+
+
+
+
+ #######################################################################################################
+ #-----------------------------Data processing--------------------------------------------------------
+ #######################################################################################################
+
+#Calculate the average value for the hour
+def average_hour(hour, day):
+
+    ref = db.reference('/l_hour/RAW/')
+
+    #Retreive RAW data about the last hour from Firebase
+    light_values = ref.child('light').get()
+    humidity_values = ref.child('humidity').get()
+    temperature_values = ref.child('temperature').get()
+
+    ref =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
+
+    if light_values is not None: #If there is any data, process it. Otherwise nothing happens
+        light_values = list_to_dict(light_values)       #Ensure data is a dict
+        light_values =  light_values.values()           #Extract values
+        if len(light_values) != 0:                      #Honestly just a cautionary check
+            light_avg = statistics.mean(light_values)   #Calculate the average
+        else:
+            light_avg = None
+        ref_light = ref.child('light')
+        ref_light.update({hour: light_avg})
+
+
+    if humidity_values is not None:
+        humidity_values = list_to_dict(humidity_values)
+        humidity_values = humidity_values.values()
+        if len(humidity_values) != 0:
+            humidity_avg = statistics.mean(humidity_values)
+        else:
+            humidity_avg = None
+        ref_humidity = ref.child('humidity')
+        ref_humidity.update({hour: humidity_avg})
+
+
+    if humidity_values is not None:
+        temperature_values = list_to_dict(temperature_values)
+        temperature_values = temperature_values.values()
+        if len(temperature_values) != 0:
+            temperature_avg = statistics.mean(temperature_values)
+        else:
+            temperature_avg = None
+        ref_temperature = ref.child('temperature')
+        ref_temperature.update({hour: temperature_avg})
+
+
+
+
+
+
+
+
+#Calculate the average value for the day
+def average_day(day):
+
+    ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
+
+    #Retreive data from Firebase
+    light_values = ref.child('light').get()
+    humidity_values = ref.child('humidity').get()
+    temperature_values = ref.child('temperature').get()
+
+    #Set upload reference
+    ref =  db.reference('/l_week/week_AVG')
+    ref_light = ref.child('light')
+    ref_humidity = ref.child('humidity')
+    ref_temperature = ref.child('temperature')
+
+    #Check for None values
+    if light_values is not None:
+        light_values = list_to_dict(light_values)
+        light_values =  light_values.values()   #Extract values
+        if len(light_values) != 0:
+            light_avg = statistics.mean(light_values)
+        else:
+            light_avg = None
+        ref_light.update({day: light_avg})
+
+
+    if humidity_values is not None:
+        humidity_values = list_to_dict(humidity_values)
+        humidity_values =  humidity_values.values()   #Extract values
+        if len(humidity_values) != 0:
+            humidity_avg = statistics.mean(humidity_values)
+        else:
+            humidity_avg = None
+        ref_humidity.update({day: humidity_avg})
+
+
+    if temperature_values is not None:
+        temperature_values = list_to_dict(temperature_values)
+        temperature_values =  temperature_values.values()   #Extract values
+        if len(temperature_values) != 0:
+            temperature_avg = statistics.mean(temperature_values)
+        else:
+            temperature_avg = None
+        ref_temperature.update({day: temperature_avg})
+
+
+
+
+
+
+#Calculate the average value for every hour over the period of the last week
+def average_hour_over_day():
+
+    week_record = np.empty([3, 7, 24])
+    week_record[:,:,:] = np.NaN
+    ref = db.reference('/l_week/hour_AVG')
+    data = ref.get()
+
+    if data is not None:
+        for day in range(7):
+            if 'weekday_' + str(day) in data:
+                if 'light' in data['weekday_' + str(day)]:
+                    light_values = data['weekday_' + str(day)]['light']
+                    light_values = list_to_dict(light_values)
+                else:
+                    light_values = None
+
+                if 'humidity' in data['weekday_' + str(day)]:
+                    humidity_values = data['weekday_' + str(day)]['humidity']
+                    humidity_values = list_to_dict(humidity_values)
+                else:
+                    humidity_values = None
+
+                if 'temperature' in data['weekday_' + str(day)]:
+                    temperature_values = data['weekday_' + str(day)]['temperature']
+                    temperature_values = list_to_dict(temperature_values)
+                else:
+                    temperature_values = None
+
+
+
+                for i in range(24):
+                    if light_values is not None:
+                        if str(i) in light_values:
+                            week_record[0, day, i] = light_values[str(i)]
+                    if humidity_values is not None:
+                        if str(i) in humidity_values:
+                            week_record[1, day, i] = humidity_values[str(i)]
+                    if temperature_values is not None:
+                        if str(i) in temperature_values:
+                            week_record[2, day, i] = temperature_values[str(i)]
+
+
+        day_hour_avg = np.nanmean(week_record, axis=1)
+
+
+        ref = db.reference('/l_week/week_hour_AVG')
+        ref_light = ref.child('light')
+        ref_hum = ref.child('humidity')
+        ref_temp = ref.child('temperature')
+
+
+        light_values = list_to_dict(day_hour_avg[0])
+        humidity_values = list_to_dict(day_hour_avg[1])
+        temperature_values = list_to_dict(day_hour_avg[2])
+
+
+        ref_light.update(light_values)
+        ref_hum.update(humidity_values)
+        ref_temp.update(temperature_values)
+
+
+
+
+
+
+
+
+def flood_database(): #helper function to flood the database with 0
+
+    for day in range(7):
+
+        ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
+        ref_light = ref.child('light')
+        ref_hum = ref.child('humidity')
+        ref_temp = ref.child('temperature')
+
+
+        ref_light.update({  0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 0,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 0,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 0,
+                            21: 0,
+                            22: 0,
+                            23: 0})
+
+
+        ref_hum.update({    0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 0,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 0,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 0,
+                            21: 0,
+                            22: 0,
+                            23: 0})
+
+        ref_temp.update({ 0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 0,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 0,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 0,
+                            21: 0,
+                            22: 0,
+                            23: 0})
+
+def send_to_topic():
+    topic = "emergency_updates"
+
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title='EMERGENCY',
+            body='TEMPERATURE IS TOO HOT HOT HOT',
+        ),
+        topic=topic,
+    )
+
+    # Send a message to the devices subscribed to the provided topic.
+    response = messaging.send(message)
+    # Response is a message ID string.
+    print('Successfully sent message:', response)
+    # [END send_to_topic]
+
+
+
+
+
+def initialise_averages():
+    for day in range(7):
+        print(day)
+        average_day(day)
+
+
+
+
+
+
+def on_message(client, userdata, message):
+    global last_hour
+    global last_day
+
+    print('Last hour at the start of a message: ', last_hour)
+
+    print('Received a message')
+
+    now = datetime.datetime.now()
+    received_payload = json.loads(message.payload)
+    cur_minute = now.minute
+    cur_hour = now.hour
+    cur_day = now.weekday()
+
+
+
+    if(cur_hour != last_hour):
+        print('The hour has changed -> Updating averages and graphs')
+        average_hour(last_hour, last_day)
+        average_hour_over_day()
+
+    if(cur_day != last_day):
+        print('The day has changed -> Updating averages and graphs')
+        average_day(last_day)
+
+
+    # print('The hour has changed -> Updating averages and graphs')
+    # average_hour(last_hour, last_day)
+    # average_hour_over_day()
+    # print('The day has changed -> Updating averages and graphs')
+    # average_day(last_day)
+    # print('------Done-------')
+
+    cur_light = received_payload['light']
+    cur_humidity = received_payload['humidity']
+    cur_temperature = received_payload['temperature']
+
+    print(received_payload)
+
+    #Unpload to current data
+    ref = db.reference('/current_measurement')
+    ref.update({
+        'light': cur_light,
+        'humidity': cur_humidity,
+        'temperature': cur_temperature
+    })
+
+    print('test1')
+
+    #Unpload to hourly backlog
+    ref = db.reference('/l_hour/RAW')
+    ref.child('light').update({cur_minute: cur_light})
+    ref.child('humidity').update({cur_minute: cur_humidity})
+    ref.child('temperature').update({cur_minute: cur_temperature})
+
+
+    update_hour_graphs(cur_hour, cur_day)
+
+    last_hour = cur_hour
+    last_day = cur_day
+    print('Last hour at the end of a message: ', last_hour)
+    print('Current hour at the end of a message: ', cur_hour)
+
+
+
+
+client = mqtt.Client()
+client.tls_set(ca_certs="mosquitto.org.crt", certfile="client.crt",keyfile="client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
+con_code = client.connect("test.mosquitto.org",port=8884)
+
+if not con_code:
+    client.subscribe("IC.embedded/spicy_chorizo/#")
+    print("Subscribed to IC.embedded/spicy_chorizo/#")
+else:
+    print(mqtt.error_string(con_code))
+
+client.on_message = on_message
+client.subscribe("IC.embedded/spicy_chorizo/#")
+# flood_database()
+# initialise_averages()
+# average_hour_graph(last_hour, last_day)
+
+# average_hour_over_day()
+# update_hour_graphs(last_hour, last_day)
+
+client.loop_forever() ##blocks for 100ms
+print("Done")
+
+# upper_range = 27
+# lower_range = 18
+# yesterday = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
+# today = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
+# average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
+# average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
