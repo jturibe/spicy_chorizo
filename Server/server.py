@@ -12,6 +12,7 @@ from firebase_admin import messaging
 import matplotlib.pyplot  as plt
 import seaborn
 import base64
+import time
 # Connect to Firebase
 cred = credentials.Certificate("Firebase/spicychorizo-794f1-firebase-adminsdk-dckj3-acd1fd6dc2.json")
 firebase_admin.initialize_app(cred, {
@@ -19,7 +20,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 now = datetime.datetime.now()
-last_hour = 20
+last_hour = now.hour
 last_day = now.weekday()
 
 
@@ -400,7 +401,7 @@ def average_hour_over_day():
 
 
 
-def flood_database(): #helper function to flood the database with 0
+def flood_database(): #helper function to flood the database with 0 for testing
 
     for day in range(7):
 
@@ -486,8 +487,164 @@ def flood_database(): #helper function to flood the database with 0
                             22: 0,
                             23: 0})
 
+
+def initialise_averages(): #helper function to flood the averages
+    for day in range(7):
+        print(day)
+        average_day(day)
+
+
+ #######################################################################################################
+ #-----------------------------Notifications--------------------------------------------------------
+ #######################################################################################################
+def send_notifications(received_payload):
+    ref = db.reference('/notifis')
+    notif_data_temp = ref.child('temperature').get()
+    if(notif_data_temp is None):
+        notif_data_temp = { 'last_event_notified': 0,
+                            'last_trend_notified': 0,
+                            'trend_high_perc': 0,
+                            'trend_low_perc': 0
+        }
+    notif_data_hum = ref.child('humidity').get()
+    if(notif_data_hum is None):
+        notif_data_hum = { 'last_event_notified': 0,
+                            'last_trend_notified': 0,
+                            'trend_high_perc': 0,
+                            'trend_low_perc': 0
+        }
+
+    cur_humidity = received_payload['humidity']
+    cur_temperature = received_payload['temperature']
+
+
+
+    ref_settings = db.reference('/user_settings')
+    settings = ref_settings.get()
+
+    if(settings is None): #If the re is no user settings on the database. In the final
+                        #product this would flag a seperate notification saying thet the temperature
+                        #is different from the one we recomend
+        settings = { 'humidity_max' : 30,
+                     'humidity_min' : 10,
+                     'temperature_max' : 30,
+                     'temperature_min' : 5
+        }
+
+    if(cur_temperature > settings['temperature_max']): #temperature is more than desired
+
+        if not(notif_data_temp['trend_high_perc'] >= 1):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] + 0.01666666666 #add to percentage of time spent hot
+        if not(notif_data_temp['trend_low_perc'] <= 0):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+        if (time.time() - notif_data_temp['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_temp['trend_high_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine has been overheating for too long!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_temp['last_trend_notified'] = time.time()
+
+
+    elif(cur_temperature < settings['temperature_min']): #temperature is more less desired
+
+        if not(notif_data_temp['trend_low_perc'] >= 1):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] + 0.01666666666 #add to percentage of time spent hot
+
+        if not(notif_data_temp['trend_high_perc'] <= 0):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_temp['trend_low_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine has been freezing for too long!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_temp['last_trend_notified'] = time.time()
+
+    else:
+        if not(notif_data_temp['trend_low_perc'] <= 0):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+        if not(notif_data_temp['trend_high_perc'] <= 0):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+
+
+
+    if(cur_humidity > settings['humidity_max']): #humidity is more than desired
+
+        if not(notif_data_hum['trend_high_perc'] >= 1):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] + 0.01666666666 #add to percentage of time spent too moist
+        if not(notif_data_hum['trend_low_perc'] <= 0):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] - 0.01666666666 #take away from percentage of time spent too dry
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_hum['trend_high_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine storage is too humid!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_hum['last_trend_notified'] = time.time()
+
+
+    elif(cur_humidity < settings['humidity_min']): #humidity is less than desired
+
+        if not(notif_data_hum['trend_low_perc'] >= 1):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] + 0.01666666666 #add to percentage of time spent too dry
+
+        if not(notif_data_hum['trend_high_perc'] <= 0):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] - 0.01666666666 #take away from percentage of time spent too moist
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_hum['trend_low_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine storage is not humid enough!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_hum['last_trend_notified'] = time.time()
+
+    else:
+        if not(notif_data_hum['trend_low_perc'] <= 0):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] - 0.01666666666 #take away from percentage of time spent too dry
+
+        if not(notif_data_hum['trend_high_perc'] <= 0):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] - 0.01666666666 #take away from percentage of time spent too moist
+
+
+    ref.child('temperature').update(notif_data_temp)
+    ref.child('humidity').update(notif_data_hum)
+
+
+
 def send_to_topic():
-    topic = "emergency_updates"
+    topic = "event_updates"
 
     message = messaging.Message(
         notification=messaging.Notification(
@@ -507,10 +664,8 @@ def send_to_topic():
 
 
 
-def initialise_averages():
-    for day in range(7):
-        print(day)
-        average_day(day)
+
+
 
 
 
@@ -564,7 +719,6 @@ def on_message(client, userdata, message):
         'temperature': cur_temperature
     })
 
-    print('test1')
 
     #Unpload to hourly backlog
     ref = db.reference('/l_hour/RAW')
@@ -572,14 +726,18 @@ def on_message(client, userdata, message):
     ref.child('humidity').update({cur_minute: cur_humidity})
     ref.child('temperature').update({cur_minute: cur_temperature})
 
-
+    print('test1')
     update_hour_graphs(cur_hour, cur_day)
+    print('test2')
 
+    send_notifications(received_payload)
+
+
+    print('test3')
     last_hour = cur_hour
     last_day = cur_day
-    print('Last hour at the end of a message: ', last_hour)
-    print('Current hour at the end of a message: ', cur_hour)
 
+    print('Finished On Message')
 
 
 
@@ -601,8 +759,10 @@ client.subscribe("IC.embedded/spicy_chorizo/#")
 
 # average_hour_over_day()
 # update_hour_graphs(last_hour, last_day)
-
-client.loop_forever() ##blocks for 100ms
+# send_notifications({'light' :20,
+#                     'temperature': 21,
+#                     'humidity': 22})
+client.loop_forever()
 print("Done")
 
 # upper_range = 27
