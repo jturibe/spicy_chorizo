@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:text="Temperature"
                         android:textSize="30dp"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textColor="#FFFFFF"/>
 
                     <TextView
@@ -49,23 +49,23 @@
                         android:layout_height="wrap_content"
                         android:text="Current Settings"
                         android:textSize="18dp"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textColor="#FFFFFF"/>
 
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
 
-                    <ImageView
-                        android:layout_alignParentRight="true"
-                        android:layout_width="40dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/thermo"/>
+<!--                    <ImageView-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:src="@drawable/thermo"/>-->
 
-                </RelativeLayout>
+<!--                </RelativeLayout>-->
 
 
             </LinearLayout>
@@ -82,7 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -90,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ºC"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:gravity="center"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="25"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ºC"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -160,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:text="Humidity"
                         android:textSize="30dp"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textColor="#FFFFFF"/>
 
                     <TextView
@@ -168,23 +168,23 @@
                         android:layout_height="wrap_content"
                         android:text="Current Settings"
                         android:textSize="18dp"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textColor="#FFFFFF"/>
 
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent">-->
 
-                    <ImageView
-                        android:layout_alignParentRight="true"
-                        android:layout_width="40dp"
-                        android:layout_height="60dp"
-                        android:src="@drawable/humid"/>
+<!--                    <ImageView-->
+<!--                        android:layout_alignParentRight="true"-->
+<!--                        android:layout_width="40dp"-->
+<!--                        android:layout_height="60dp"-->
+<!--                        android:src="@drawable/humid"/>-->
 
-                </RelativeLayout>
+<!--                </RelativeLayout>-->
 
 
             </LinearLayout>
@@ -201,7 +201,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -209,7 +209,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="%"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:text="-"
                     android:gravity="center"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="25"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -234,7 +234,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="%"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:textSize="35dp"
                     android:textColor="#FFFFFF"/>
 
@@ -254,7 +254,7 @@
         android:layout_marginLeft="120dp"
         android:layout_marginTop="40dp"
         android:background="#74FFFFFF"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="@font/roboto"
         android:text="EDIT"
         android:textColor="#FFFFFF"
         android:textSize="24sp" />

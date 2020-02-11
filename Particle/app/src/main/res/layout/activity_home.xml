@@ -93,11 +93,13 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
                                 android:background="#660F29"
-                                android:text="Temperature"
-                                android:textSize="28dp"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:text="Temperature"
+                                android:textColor="#FFFFFF"
+                                android:textSize="28dp" />
 
                         </LinearLayout>
 
@@ -108,27 +110,27 @@
                             android:orientation="horizontal"
                             android:clickable="true">
 
-                            <RelativeLayout
-                                android:layout_width="40dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp">
+<!--                            <RelativeLayout-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginLeft="10dp"-->
+<!--                                android:layout_marginTop="10dp">-->
 
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="90dp"
-                                    android:src="@drawable/thermo"
-                                    android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="40dp"-->
+<!--                                    android:layout_height="90dp"-->
+<!--                                    android:src="@drawable/thermo"-->
+<!--                                    android:scaleType="fitCenter"-->
+<!--                                    android:background="#660F29"/>-->
 
-                            </RelativeLayout>
+<!--                            </RelativeLayout>-->
 
                             <TextView
                                 android:id="@+id/current_temperature"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"
+                                android:fontFamily="@font/roboto"
                                 android:textSize="50sp"
                                 android:textColor="#FFFFFF"/>
 
@@ -161,7 +163,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:background="#660F29">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -172,42 +175,44 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#660F29"
+                                android:layout_marginTop="10dp"
                                 android:text="Humidity"
                                 android:textSize="28dp"
+                                android:textColor="#FFFFFF"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:fontFamily="@font/roboto"/>
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/hum_panel"
                             android:layout_width="match_parent"
-                            android:layout_height="112dp"
+                            android:layout_height="102dp"
                             android:orientation="horizontal"
                             android:background="#660F29"
                             android:clickable="true">
 
-                            <RelativeLayout
-                                android:layout_width="40dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp">
+<!--                            <RelativeLayout-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginLeft="10dp"-->
+<!--                                android:layout_marginTop="10dp">-->
 
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="90dp"
-                                    android:src="@drawable/humid"
-                                    android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="40dp"-->
+<!--                                    android:layout_height="90dp"-->
+<!--                                    android:src="@drawable/humid"-->
+<!--                                    android:scaleType="fitCenter"-->
+<!--                                    android:background="#660F29"/>-->
 
-                            </RelativeLayout>
+<!--                            </RelativeLayout>-->
 
                             <TextView
                                 android:id="@+id/current_humidity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"
+                                android:fontFamily="@font/roboto"
                                 android:textSize="50sp"
                                 android:textColor="#FFFFFF"/>
 
@@ -247,7 +252,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:background="#660F29">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -258,40 +264,42 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#660F29"
+                                android:layout_marginTop="10dp"
                                 android:text="Light"
                                 android:textSize="28dp"
+                                android:textColor="#FFFFFF"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:fontFamily="@font/roboto"/>
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="112dp"
+                            android:layout_height="102dp"
                             android:orientation="horizontal"
                             android:background="#660F29">
 
-                            <RelativeLayout
-                                android:layout_width="40dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp">
+<!--                            <RelativeLayout-->
+<!--                                android:layout_width="40dp"-->
+<!--                                android:layout_height="match_parent"-->
+<!--                                android:layout_marginLeft="10dp"-->
+<!--                                android:layout_marginTop="10dp">-->
 
-                                <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="90dp"
-                                    android:src="@drawable/lig"
-                                    android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+<!--                                <ImageView-->
+<!--                                    android:layout_width="40dp"-->
+<!--                                    android:layout_height="90dp"-->
+<!--                                    android:src="@drawable/lig"-->
+<!--                                    android:scaleType="fitCenter"-->
+<!--                                    android:background="#660F29"/>-->
 
-                            </RelativeLayout>
+<!--                            </RelativeLayout>-->
 
                             <TextView
                                 android:id="@+id/current_light"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"
+                                android:fontFamily="@font/roboto"
                                 android:textSize="50sp"
                                 android:textColor="#FFFFFF"/>
 
