@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".displaySettings"
-    android:background="#EFF0F1">
+    android:background="#4D071D">
 
 
     <androidx.cardview.widget.CardView
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#FFFFFF">
+            android:background="#660F29">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,9 +42,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:text="Temperature"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="30dp" />
 
 
@@ -54,8 +54,8 @@
                     android:layout_marginLeft="30dp"
                     android:text="New Settings"
                     android:textSize="18dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:textColor="#D3000000"/>
+                    android:fontFamily="@font/roboto"
+                    android:textColor="#FFFFFF"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,24 +72,27 @@
                         android:hint="Min."
                         android:inputType="numberSigned"
                         android:nextFocusDown="@id/maxTempInput"
-                        android:textSize="25dp" />
+                        android:background="#660F29"
+                        android:textColor="#FFFFFF"
+                        android:textSize="25dp"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ºC"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:text="-"
                         android:gravity="center"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <EditText
                         android:id="@+id/maxTempInput"
@@ -99,15 +102,17 @@
                         android:textSize="25dp"
                         android:fontFamily="sans-serif-light"
                         android:inputType="numberSigned"
-                        android:nextFocusDown="@id/minHumInput"/>
+                        android:nextFocusDown="@id/minHumInput"
+                        android:background="#660F29"
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ºC"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                 </LinearLayout>
 
@@ -131,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#FFFFFF">
+            android:background="#660F29">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,9 +157,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:fontFamily="sans-serif-thin"
+                    android:fontFamily="@font/roboto"
                     android:text="Humidity"
-                    android:textColor="#000000"
+                    android:textColor="#FFFFFF"
                     android:textSize="30dp" />
 
 
@@ -164,8 +169,8 @@
                     android:layout_marginLeft="30dp"
                     android:text="New Settings"
                     android:textSize="18dp"
-                    android:fontFamily="sans-serif-thin"
-                    android:textColor="#D3000000"/>
+                    android:fontFamily="@font/roboto"
+                    android:textColor="#FFFFFF"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -182,25 +187,26 @@
                         android:textSize="25dp"
                         android:fontFamily="sans-serif-light"
                         android:inputType="numberSigned"
-                        android:nextFocusDown="@id/maxHumInput">
-                    </EditText>
+                        android:nextFocusDown="@id/maxHumInput"
+                        android:background="#660F29"
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="%"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:text="-"
                         android:gravity="center"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                     <EditText
                         android:id="@+id/maxHumInput"
@@ -209,15 +215,17 @@
                         android:hint="Max."
                         android:textSize="25dp"
                         android:fontFamily="sans-serif-light"
-                        android:inputType="numberSigned"/>
+                        android:inputType="numberSigned"
+                        android:background="#660F29"
+                        android:textColor="#FFFFFF"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="%"
-                        android:fontFamily="sans-serif-thin"
+                        android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#000000"/>
+                        android:textColor="#FFFFFF"/>
 
                 </LinearLayout>
 
@@ -239,6 +247,7 @@
         android:layout_marginLeft="120dp"
         android:layout_marginTop="10dp"
         android:text="@string/advancedsettingstext"
+        android:textColor="#FFFFFF"
         android:textSize="16sp" />
 
     <Button
@@ -252,7 +261,7 @@
         android:layout_marginTop="30dp"
         android:background="@drawable/buttonbackground"
         android:enabled="false"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="@font/roboto"
         android:text="SUBMIT"
         android:textColor="@drawable/buttontextcolour"
         android:textSize="30sp" />

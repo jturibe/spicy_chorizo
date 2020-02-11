@@ -1,34 +1,37 @@
 package com.example.particle;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.common.collect.Iterables.size;
+
 public class ViewPagerAdapter extends PagerAdapter  {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    // TODO change images to adjust for card clicks
-    // change build class in order to change drawable resources
-    private Integer [] images =
-            {R.drawable.monzo_graph1,
-                    R.drawable.monzo_graph1,
-                    R.drawable.monzo_graph1};
+    private ArrayList<Bitmap> images;
 
-    public ViewPagerAdapter(Context context) {
+    public ViewPagerAdapter(ArrayList<Bitmap> images, Context context) {
+        this.images = images;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return size(images);
     }
 
     @Override
@@ -42,7 +45,8 @@ public class ViewPagerAdapter extends PagerAdapter  {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        imageView.setImageBitmap(images.get(position));
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);

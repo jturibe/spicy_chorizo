@@ -18,6 +18,8 @@ public class displaySettings extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_settings);
 
+        // TODO actually show current settings and not mock values
+
         editButton = findViewById(R.id.editButton);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
