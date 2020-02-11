@@ -2,11 +2,12 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".displaySettings"
-    android:background="#4D071D">
+    android:background="#ebf0ef">
 
 
     <androidx.cardview.widget.CardView
@@ -15,13 +16,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="100dp"
         android:layout_marginRight="30dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        card_view:cardElevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#660F29">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +46,7 @@
                     android:gravity="center"
                     android:fontFamily="@font/roboto"
                     android:text="Temperature"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30dp" />
 
 
@@ -55,7 +57,7 @@
                     android:text="New Settings"
                     android:textSize="18dp"
                     android:fontFamily="@font/roboto"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,8 +74,8 @@
                         android:hint="Min."
                         android:inputType="numberSigned"
                         android:nextFocusDown="@id/maxTempInput"
-                        android:background="#660F29"
-                        android:textColor="#FFFFFF"
+                        android:background="#FFFFFF"
+                        android:textColor="#000000"
                         android:textSize="25dp"
                         />
 
@@ -83,7 +85,7 @@
                         android:text="ºC"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="30dp"
@@ -92,7 +94,7 @@
                         android:gravity="center"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <EditText
                         android:id="@+id/maxTempInput"
@@ -103,8 +105,8 @@
                         android:fontFamily="sans-serif-light"
                         android:inputType="numberSigned"
                         android:nextFocusDown="@id/minHumInput"
-                        android:background="#660F29"
-                        android:textColor="#FFFFFF"/>
+                        android:background="#FFFFFF"
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -112,7 +114,7 @@
                         android:text="ºC"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                 </LinearLayout>
 
@@ -130,13 +132,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        card_view:cardElevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#660F29">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,7 +162,7 @@
                     android:gravity="center"
                     android:fontFamily="@font/roboto"
                     android:text="Humidity"
-                    android:textColor="#FFFFFF"
+                    android:textColor="#000000"
                     android:textSize="30dp" />
 
 
@@ -170,7 +173,7 @@
                     android:text="New Settings"
                     android:textSize="18dp"
                     android:fontFamily="@font/roboto"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,8 +191,8 @@
                         android:fontFamily="sans-serif-light"
                         android:inputType="numberSigned"
                         android:nextFocusDown="@id/maxHumInput"
-                        android:background="#660F29"
-                        android:textColor="#FFFFFF"/>
+                        android:background="#FFFFFF"
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -197,7 +200,7 @@
                         android:text="%"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="30dp"
@@ -206,7 +209,7 @@
                         android:gravity="center"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <EditText
                         android:id="@+id/maxHumInput"
@@ -216,8 +219,8 @@
                         android:textSize="25dp"
                         android:fontFamily="sans-serif-light"
                         android:inputType="numberSigned"
-                        android:background="#660F29"
-                        android:textColor="#FFFFFF"/>
+                        android:background="#FFFFFF"
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -225,7 +228,7 @@
                         android:text="%"
                         android:fontFamily="@font/roboto"
                         android:textSize="35dp"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                 </LinearLayout>
 
@@ -247,7 +250,7 @@
         android:layout_marginLeft="120dp"
         android:layout_marginTop="10dp"
         android:text="@string/advancedsettingstext"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="16sp" />
 
     <Button

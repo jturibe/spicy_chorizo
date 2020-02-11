@@ -2,11 +2,12 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".displaySettings"
-    android:background="#4D071D">
+    android:background="#ebf0ef">
 
 
     <androidx.cardview.widget.CardView
@@ -15,13 +16,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="8dp"
+        card_view:cardElevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#660F29">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,7 +44,7 @@
                         android:text="Temperature"
                         android:textSize="30dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -50,22 +52,22 @@
                         android:text="Current Settings"
                         android:textSize="18dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
 
                 </LinearLayout>
 
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-<!--                    <ImageView-->
-<!--                        android:layout_alignParentRight="true"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="60dp"-->
-<!--                        android:src="@drawable/thermo"/>-->
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:layout_width="40dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/thermo"/>
 
-<!--                </RelativeLayout>-->
+                </RelativeLayout>
 
 
             </LinearLayout>
@@ -79,12 +81,12 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/temp_min"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,7 +94,7 @@
                     android:text="ºC"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="30dp"
@@ -101,15 +103,15 @@
                     android:gravity="center"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25"
+                    android:id="@+id/temp_max"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +119,7 @@
                     android:text="ºC"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
 
             </LinearLayout>
@@ -134,13 +136,14 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
+        card_view:cardElevation="10dp"
         app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#660F29">
+            android:background="#FFFFFF">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -161,7 +164,7 @@
                         android:text="Humidity"
                         android:textSize="30dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -169,22 +172,22 @@
                         android:text="Current Settings"
                         android:textSize="18dp"
                         android:fontFamily="@font/roboto"
-                        android:textColor="#FFFFFF"/>
+                        android:textColor="#000000"/>
 
 
                 </LinearLayout>
 
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-<!--                    <ImageView-->
-<!--                        android:layout_alignParentRight="true"-->
-<!--                        android:layout_width="40dp"-->
-<!--                        android:layout_height="60dp"-->
-<!--                        android:src="@drawable/humid"/>-->
+                    <ImageView
+                        android:layout_alignParentRight="true"
+                        android:layout_width="40dp"
+                        android:layout_height="60dp"
+                        android:src="@drawable/humid"/>
 
-<!--                </RelativeLayout>-->
+                </RelativeLayout>
 
 
             </LinearLayout>
@@ -200,10 +203,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
+                    android:id="@+id/hum_min"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -211,7 +214,7 @@
                     android:text="%"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="30dp"
@@ -220,15 +223,15 @@
                     android:gravity="center"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="25"
+                    android:id="@+id/hum_max"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,7 +239,7 @@
                     android:text="%"
                     android:fontFamily="@font/roboto"
                     android:textSize="35dp"
-                    android:textColor="#FFFFFF"/>
+                    android:textColor="#000000"/>
 
 
             </LinearLayout>
