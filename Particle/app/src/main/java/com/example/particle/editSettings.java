@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class editSettings extends Activity {
 
     EditText editTextMinTemp;
@@ -61,6 +64,19 @@ public class editSettings extends Activity {
                     AlertDialog alert = minTempTooLow.create();
                     alert.show();
                 } else {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    DatabaseReference tempMaxRef = database.getReferenceFromUrl("https://spicychorizo-794f1.firebaseio.com/user_settings/temperature_max");
+                    DatabaseReference tempMinRef = database.getReferenceFromUrl("https://spicychorizo-794f1.firebaseio.com/user_settings/temperature_min");
+                    DatabaseReference humMinRef = database.getReferenceFromUrl("https://spicychorizo-794f1.firebaseio.com/user_settings/humidity_min");
+                    DatabaseReference humMaxRef = database.getReferenceFromUrl("https://spicychorizo-794f1.firebaseio.com/user_settings/humidity_max");
+
+                    tempMaxRef.setValue(Double.parseDouble(editTextMaxTemp.getText().toString()));
+                    tempMinRef.setValue(Double.parseDouble(editTextMinTemp.getText().toString()));
+                    humMaxRef.setValue(Double.parseDouble(editTextMaxHum.getText().toString()));
+                    humMinRef.setValue(Double.parseDouble(editTextMinHum.getText().toString()));
+
+
                     positiveButtonPress();
                 }
             }
