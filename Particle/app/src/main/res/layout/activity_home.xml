@@ -24,17 +24,16 @@
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffff"/>
+                android:background="#ffff" />
 
             <LinearLayout
                 android:id="@+id/SliderDots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/viewPager"
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical|center_horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                />
+                android:orientation="horizontal" />
 
         </androidx.cardview.widget.CardView>
 
@@ -53,182 +52,182 @@
         android:scaleType="fitCenter"
         android:src="@drawable/settings_icon" />
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:id="@+id/temperature_layout"-->
-<!--        android:layout_width="190dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:layout_above="@id/lighting_layout"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:clickable="true"-->
-<!--        app:cardBackgroundColor="#660F29"-->
-<!--        app:cardCornerRadius="8dp"-->
-<!--        card_view:cardElevation="2dp"-->
-<!--        card_view:cardUseCompatPadding="true">-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerInParent="true">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/temperature_label"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:text="Temperature"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:gravity="center"-->
-<!--                    android:textSize="25sp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/current_temperature"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@id/temperature_label"-->
-<!--                    android:layout_toEndOf="@id/thermometer"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="50sp" />-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/thermometer"-->
-<!--                    android:layout_width="44dp"-->
-<!--                    android:layout_height="47dp"-->
-<!--                    android:layout_below="@id/temperature_label"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:src="@drawable/thermo" />-->
-
-<!--            </RelativeLayout>-->
-<!--        </RelativeLayout>-->
-<!--    </androidx.cardview.widget.CardView>-->
-
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:id="@+id/lighting_layout"-->
-<!--        android:layout_width="190dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:clickable="true"-->
-<!--        app:cardBackgroundColor="#660F29"-->
-<!--        app:cardCornerRadius="8dp"-->
-<!--        card_view:cardElevation="2dp"-->
-<!--        card_view:cardUseCompatPadding="true">-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerInParent="true">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/light_label"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:text="Lighting"-->
-<!--                    android:gravity="center"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="25sp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/current_light"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@id/light_label"-->
-<!--                    android:layout_toEndOf="@id/light"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="50sp" />-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/light"-->
-<!--                    android:layout_width="44dp"-->
-<!--                    android:layout_height="47dp"-->
-<!--                    android:layout_below="@id/light_label"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginEnd="5dp"-->
-<!--                    android:src="@drawable/lig" />-->
-
-<!--            </RelativeLayout>-->
-<!--        </RelativeLayout>-->
-<!--    </androidx.cardview.widget.CardView>-->
-
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:id="@+id/humidity_layout"-->
-<!--        android:layout_width="190dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:layout_above="@id/lighting_layout"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginEnd="10dp"-->
-<!--        android:clickable="true"-->
-<!--        app:cardBackgroundColor="#660F29"-->
-<!--        app:cardCornerRadius="8dp"-->
-<!--        card_view:cardElevation="2dp"-->
-<!--        card_view:cardUseCompatPadding="true">-->
-
-<!--        <RelativeLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-
-<!--            <RelativeLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerInParent="true">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/humidity_label"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:text="Humidity"-->
-<!--                    android:gravity="center"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="25sp" />-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/current_humidity"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_below="@id/humidity_label"-->
-<!--                    android:layout_toEndOf="@id/hum"-->
-<!--                    android:fontFamily="sans-serif-thin"-->
-<!--                    android:textColor="#FFFFFF"-->
-<!--                    android:textSize="50sp" />-->
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/hum"-->
-<!--                    android:layout_width="44dp"-->
-<!--                    android:layout_height="47dp"-->
-<!--                    android:layout_below="@id/humidity_label"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:layout_marginLeft="5dp"-->
-<!--                    android:src="@drawable/humid" />-->
-
-<!--            </RelativeLayout>-->
-<!--        </RelativeLayout>-->
-<!--    </androidx.cardview.widget.CardView>-->
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:layout_marginTop="400dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="360dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/tempCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#660F29"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#660F29">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#660F29"
+                                android:text="Temperature"
+                                android:textSize="28dp"
+                                android:gravity="center"
+                                android:fontFamily="sans-serif-light"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="112dp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="90dp"
+                                    android:src="@drawable/thermo"
+                                    android:scaleType="fitCenter"
+                                    android:background="#660F29"/>
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/current_temperature"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:fontFamily="sans-serif-light"
+                                android:textSize="50sp"
+                                android:textColor="#FFFFFF"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="match_parent"/>
+
+            <LinearLayout
+                android:layout_width="170dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="end">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/humCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#660F29"
+                    app:cardCornerRadius="8dp"
+                    android:clickable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#660F29"
+                                android:text="Humidity"
+                                android:textSize="28dp"
+                                android:gravity="center"
+                                android:fontFamily="sans-serif-light"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="112dp"
+                            android:orientation="horizontal"
+                            android:background="#660F29">
+
+                            <RelativeLayout
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp">
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="90dp"
+                                    android:src="@drawable/humid"
+                                    android:scaleType="fitCenter"
+                                    android:background="#660F29"/>
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/current_humidity"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:fontFamily="sans-serif-light"
+                                android:textSize="50sp"
+                                android:textColor="#FFFFFF"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            android:gravity="center">
 
             <LinearLayout
                 android:layout_width="170dp"
@@ -255,7 +254,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="#660F29"
-                                android:text="Temperature"
+                                android:text="Light"
                                 android:textSize="28dp"
                                 android:gravity="center"
                                 android:fontFamily="sans-serif-light"/>
@@ -264,8 +263,9 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="110dp"
-                            android:orientation="horizontal">
+                            android:layout_height="112dp"
+                            android:orientation="horizontal"
+                            android:background="#660F29">
 
                             <RelativeLayout
                                 android:layout_width="40dp"
@@ -276,17 +276,20 @@
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:layout_height="90dp"
-                                    android:src="@drawable/thermo"
+                                    android:src="@drawable/lig"
                                     android:scaleType="fitCenter"
                                     android:background="#660F29"/>
 
                             </RelativeLayout>
 
                             <TextView
+                                android:id="@+id/current_light"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:text="hello"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:fontFamily="sans-serif-light"
+                                android:textSize="50sp"
+                                android:textColor="#FFFFFF"/>
 
                         </LinearLayout>
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -33,6 +34,8 @@ public class HomeActivity extends Activity {
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    CardView tempCard;
+    int value = 0;
 
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -48,9 +51,9 @@ public class HomeActivity extends Activity {
             }
         });
 
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
+
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this);
 

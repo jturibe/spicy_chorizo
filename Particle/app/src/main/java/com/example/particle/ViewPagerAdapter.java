@@ -15,6 +15,8 @@ public class ViewPagerAdapter extends PagerAdapter  {
 
     private Context context;
     private LayoutInflater layoutInflater;
+    // TODO change images to adjust for card clicks
+    // change build class in order to change drawable resources
     private Integer [] images =
             {R.drawable.monzo_graph1,
                     R.drawable.monzo_graph1,
