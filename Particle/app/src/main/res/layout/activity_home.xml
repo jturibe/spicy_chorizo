@@ -4,27 +4,48 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4D071D">
+    android:background="#ebf0ef">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#00FFFFFF"
+        android:duplicateParentState="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF">
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="62dp"
+                android:layout_height="58dp"
+                android:layout_marginLeft="340sp"
+                android:layout_marginTop="10sp"
+                android:adjustViewBounds="true"
+                android:backgroundTint="#00FDFDFE"
+                android:contentDescription="TODO"
+                android:scaleType="fitCenter"
+                android:src="@drawable/settings_icon" />
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="300dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
-            android:background="#FFFF"
+            android:background="#FFFFFF"
+            card_view:cardElevation="10dp"
             app:cardCornerRadius="8dp">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#ffff" />
+                android:background="#FFFFFF" />
 
             <LinearLayout
                 android:id="@+id/SliderDots"
@@ -40,22 +61,10 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/settingsButton"
-        android:layout_width="62dp"
-        android:layout_height="58dp"
-        android:layout_marginLeft="340sp"
-        android:layout_marginTop="10sp"
-        android:adjustViewBounds="true"
-        android:backgroundTint="#4D071D"
-        android:contentDescription="TODO"
-        android:scaleType="fitCenter"
-        android:src="@drawable/settings_icon" />
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="400dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -63,27 +72,29 @@
             android:layout_height="150dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="170dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical">-->
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/tempCard"
-                    android:layout_width="match_parent"
+                    android:layout_width="170dp"
                     android:layout_height="match_parent"
-                    android:background="#660F29"
-                    app:cardCornerRadius="8dp"
-                    android:clickable="true">
+                    android:orientation="vertical"
+                    android:background="#FFFFFF"
+                    android:clickable="true"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="#660F29">
+                        android:background="#FFFFFF"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -91,19 +102,24 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id ="@+id/temp_label"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#660F29"
-                                android:text="Temperature"
-                                android:textSize="28dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#FDFDFE"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:text="Temperature"
+                                android:textColor="#000000"
+                                android:textSize="28dp" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/temp_panel"
                             android:layout_width="match_parent"
-                            android:layout_height="112dp"
+                            android:layout_height="102dp"
+                            android:clickable="true"
                             android:orientation="horizontal">
 
                             <RelativeLayout
@@ -114,10 +130,11 @@
 
                                 <ImageView
                                     android:layout_width="40dp"
-                                    android:layout_height="90dp"
-                                    android:src="@drawable/thermo"
+                                    android:layout_height="50dp"
+                                    android:background="#FFFFFF"
                                     android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+                                    android:layout_centerInParent="true"
+                                    android:src="@drawable/thermo" />
 
                             </RelativeLayout>
 
@@ -125,10 +142,10 @@
                                 android:id="@+id/current_temperature"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"
-                                android:textSize="50sp"
-                                android:textColor="#FFFFFF"/>
+                                android:textColor="#000000"
+                                android:textSize="50sp" />
 
                         </LinearLayout>
 
@@ -136,29 +153,33 @@
 
                 </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
             <TextView
                 android:layout_width="10dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
-            <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:gravity="end">
+            <!--<LinearLayout-->
+                <!--android:layout_width="170dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:gravity="end"-->
+                <!--android:orientation="vertical">-->
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/humCard"
-                    android:layout_width="match_parent"
+                    android:layout_width="170dp"
                     android:layout_height="match_parent"
-                    android:background="#660F29"
-                    app:cardCornerRadius="8dp"
-                    android:clickable="true">
+                    android:gravity="end"
+                    android:orientation="vertical"
+                    android:background="#FFFFFF"
+                    android:clickable="true"
+                    card_view:cardElevation="0dp"
+                    app:cardCornerRadius="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -167,21 +188,26 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id ="@+id/hum_label"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#660F29"
-                                android:text="Humidity"
-                                android:textSize="28dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#FDFDFE"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:text="Humidity"
+                                android:textColor="#707070"
+                                android:textSize="28dp" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/hum_panel"
                             android:layout_width="match_parent"
-                            android:layout_height="112dp"
-                            android:orientation="horizontal"
-                            android:background="#660F29">
+                            android:layout_height="102dp"
+                            android:background="#FFFFFF"
+                            android:clickable="true"
+                            android:orientation="horizontal">
 
                             <RelativeLayout
                                 android:layout_width="40dp"
@@ -192,9 +218,9 @@
                                 <ImageView
                                     android:layout_width="40dp"
                                     android:layout_height="90dp"
-                                    android:src="@drawable/humid"
+                                    android:background="#FFFFFF"
                                     android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+                                    android:src="@drawable/humid" />
 
                             </RelativeLayout>
 
@@ -202,10 +228,10 @@
                                 android:id="@+id/current_humidity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"
-                                android:textSize="50sp"
-                                android:textColor="#FFFFFF"/>
+                                android:textColor="#707070"
+                                android:textSize="50sp" />
 
                         </LinearLayout>
 
@@ -213,36 +239,40 @@
 
                 </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="10dp"/>
+            android:layout_height="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="170dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="170dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:orientation="vertical">-->
 
                 <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
+                    android:layout_width="400dp"
                     android:layout_height="match_parent"
-                    android:background="#660F29"
+                    android:orientation="vertical"
+                    android:background="#FFFFFF"
+                    card_view:cardElevation="0dp"
                     app:cardCornerRadius="8dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -253,32 +283,36 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="#660F29"
-                                android:text="Light"
-                                android:textSize="28dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#FFFFFF"
+                                android:fontFamily="@font/roboto"
                                 android:gravity="center"
-                                android:fontFamily="sans-serif-light"/>
+                                android:text="Light"
+                                android:textColor="#000000"
+                                android:textSize="28dp" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="112dp"
-                            android:orientation="horizontal"
-                            android:background="#660F29">
+                            android:layout_height="102dp"
+                            android:background="#FFFFFF"
+                            android:orientation="horizontal">
 
                             <RelativeLayout
                                 android:layout_width="40dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="10dp"
+                                android:layout_marginLeft="130dp"
                                 android:layout_marginTop="10dp">
 
                                 <ImageView
-                                    android:layout_width="40dp"
-                                    android:layout_height="90dp"
-                                    android:src="@drawable/lig"
+                                    android:layout_width="100dp"
+                                    android:layout_height="100dp"
+                                    android:background="#FFFFFF"
                                     android:scaleType="fitCenter"
-                                    android:background="#660F29"/>
+                                    android:gravity="center"
+                                    android:layout_marginBottom="20dp"
+                                    android:src="@drawable/lig" />
 
                             </RelativeLayout>
 
@@ -286,10 +320,10 @@
                                 android:id="@+id/current_light"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:fontFamily="sans-serif-light"
-                                android:textSize="50sp"
-                                android:textColor="#FFFFFF"/>
+                                android:fontFamily="@font/roboto"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#000000"
+                                android:textSize="50sp" />
 
                         </LinearLayout>
 
@@ -297,7 +331,7 @@
 
                 </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 

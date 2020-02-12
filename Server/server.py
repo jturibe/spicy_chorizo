@@ -12,6 +12,7 @@ from firebase_admin import messaging
 import matplotlib.pyplot  as plt
 import seaborn
 import base64
+import time
 # Connect to Firebase
 cred = credentials.Certificate("Firebase/spicychorizo-794f1-firebase-adminsdk-dckj3-acd1fd6dc2.json")
 firebase_admin.initialize_app(cred, {
@@ -19,7 +20,7 @@ firebase_admin.initialize_app(cred, {
 })
 
 now = datetime.datetime.now()
-last_hour = 20
+last_hour = now.hour
 last_day = now.weekday()
 
 
@@ -53,6 +54,24 @@ def filter_none(lst):
  #######################################################################################################
  #-----------------------------Graph creation--------------------------------------------------------
  #######################################################################################################
+def update_day_graphs(cur_day):
+    ref = db.reference('/l_week/week_AVG/')
+    #Retrieve data from firebase
+    humidity_values = list_to_dict(ref.child('humidity').get())
+    temperature_values = list_to_dict(ref.child('temperature').get())
+
+    ref = db.reference('/user_settings')
+    settings = ref.get()
+    if(settings is None):
+        settings = { 'humidity_max' : 70,
+                     'humidity_min' : 60,
+                     'temperature_max' : 18,
+                     'temperature_min' : 7
+        }
+
+    average_day_graph_temp(cur_day, temperature_values, settings[temperature_min], settings[temperature_max])
+
+
 
 def update_hour_graphs(cur_hour, cur_day):
 
@@ -73,10 +92,10 @@ def update_hour_graphs(cur_hour, cur_day):
     ref = db.reference('/user_settings')
     settings = ref.get()
     if(settings is None):
-        settings = { 'humidity_max' : 30,
-                     'humidity_min' : 10,
-                     'temperature_max' : 30,
-                     'temperature_min' : 5
+        settings = { 'humidity_max' : 70,
+                     'humidity_min' : 60,
+                     'temperature_max' : 18,
+                     'temperature_min' : 7
         }
 
     average_hour_graph_temp(cur_hour, cur_day, temperature_values_yesterday, temperature_values_today, settings['temperature_max'], settings['temperature_min'])
@@ -217,7 +236,7 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     plt.savefig("average_hour_graph_hum.png")
     plt.clf()
     with open("average_hour_graph_hum.png", "rb") as img_file:
-        image = base64.b64encode(img_file.read())
+        image_string = base64.b64encode(img_file.read())
 
     ref_average_hour_graph_temp = db.reference('/graphs_hum')
     ref_average_hour_graph_temp.update({'average_hour_graph': image_string.decode()})
@@ -401,96 +420,163 @@ def average_hour_over_day():
 
 
 
-
-
-def flood_database(): #helper function to flood the database with 0
-
+def initialise_averages(): #helper function to flood the averages
     for day in range(7):
-
-        ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
-        ref_light = ref.child('light')
-        ref_hum = ref.child('humidity')
-        ref_temp = ref.child('temperature')
+        print(day)
+        average_day(day)
 
 
-        ref_light.update({  0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
+ #######################################################################################################
+ #-----------------------------Notifications--------------------------------------------------------
+ #######################################################################################################
+def send_notifications(received_payload):
+    ref = db.reference('/notifis')
+    notif_data_temp = ref.child('temperature').get()
+    if(notif_data_temp is None):
+        notif_data_temp = { 'last_event_notified': 0,
+                            'last_trend_notified': 0,
+                            'trend_high_perc': 0,
+                            'trend_low_perc': 0
+        }
+    notif_data_hum = ref.child('humidity').get()
+    if(notif_data_hum is None):
+        notif_data_hum = { 'last_event_notified': 0,
+                            'last_trend_notified': 0,
+                            'trend_high_perc': 0,
+                            'trend_low_perc': 0
+        }
+
+    cur_humidity = received_payload['humidity']
+    cur_temperature = received_payload['temperature']
 
 
-        ref_hum.update({    0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
 
-        ref_temp.update({ 0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
+    ref_settings = db.reference('/user_settings')
+    settings = ref_settings.get()
+
+    if(settings is None): #If the re is no user settings on the database. In the final
+                        #product this would flag a seperate notification saying thet the temperature
+                        #is different from the one we recomend
+        settings = { 'humidity_max' : 30,
+                     'humidity_min' : 10,
+                     'temperature_max' : 30,
+                     'temperature_min' : 5
+        }
+
+    if(cur_temperature > settings['temperature_max']): #temperature is more than desired
+
+        if not(notif_data_temp['trend_high_perc'] >= 1):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] + 0.01666666666 #add to percentage of time spent hot
+        if not(notif_data_temp['trend_low_perc'] <= 0):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+        if (time.time() - notif_data_temp['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_temp['trend_high_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine has been overheating for too long!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_temp['last_trend_notified'] = time.time()
+
+
+    elif(cur_temperature < settings['temperature_min']): #temperature is more less desired
+
+        if not(notif_data_temp['trend_low_perc'] >= 1):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] + 0.01666666666 #add to percentage of time spent hot
+
+        if not(notif_data_temp['trend_high_perc'] <= 0):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_temp['trend_low_perc']>= 0.5): #If there is a trend of high temperature in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine has been freezing for too long!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_temp['last_trend_notified'] = time.time()
+
+    else:
+        if not(notif_data_temp['trend_low_perc'] <= 0):
+            notif_data_temp['trend_low_perc'] = notif_data_temp['trend_low_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+        if not(notif_data_temp['trend_high_perc'] <= 0):
+            notif_data_temp['trend_high_perc'] = notif_data_temp['trend_high_perc'] - 0.01666666666 #add to percentage of time spent hot
+
+
+
+
+
+    if(cur_humidity > settings['humidity_max']): #humidity is more than desired
+
+        if not(notif_data_hum['trend_high_perc'] >= 1):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] + 0.01666666666 #add to percentage of time spent too moist
+        if not(notif_data_hum['trend_low_perc'] <= 0):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] - 0.01666666666 #take away from percentage of time spent too dry
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_hum['trend_high_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine storage is too humid!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_hum['last_trend_notified'] = time.time()
+
+
+    elif(cur_humidity < settings['humidity_min']): #humidity is less than desired
+
+        if not(notif_data_hum['trend_low_perc'] >= 1):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] + 0.01666666666 #add to percentage of time spent too dry
+
+        if not(notif_data_hum['trend_high_perc'] <= 0):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] - 0.01666666666 #take away from percentage of time spent too moist
+
+
+        if (time.time() - notif_data_hum['last_trend_notified']) > 300: #a full day or week (5 minutes for demo) has passed since the last trend notification
+            if(notif_data_hum['trend_low_perc']>= 0.5): #If there is a trend of high humidity in the last 5 min
+                topic = "event_updates"
+                message = messaging.Message(
+                    notification=messaging.Notification(
+                        title='Careful!',
+                        body='Your wine storage is not humid enough!',
+                    ),
+                    topic=topic,
+                )
+                response = messaging.send(message)
+                notif_data_hum['last_trend_notified'] = time.time()
+
+    else:
+        if not(notif_data_hum['trend_low_perc'] <= 0):
+            notif_data_hum['trend_low_perc'] = notif_data_hum['trend_low_perc'] - 0.01666666666 #take away from percentage of time spent too dry
+
+        if not(notif_data_hum['trend_high_perc'] <= 0):
+            notif_data_hum['trend_high_perc'] = notif_data_hum['trend_high_perc'] - 0.01666666666 #take away from percentage of time spent too moist
+
+
+    ref.child('temperature').update(notif_data_temp)
+    ref.child('humidity').update(notif_data_hum)
+
+
 
 def send_to_topic():
-    topic = "emergency_updates"
+    topic = "event_updates"
 
     message = messaging.Message(
         notification=messaging.Notification(
@@ -510,10 +596,8 @@ def send_to_topic():
 
 
 
-def initialise_averages():
-    for day in range(7):
-        print(day)
-        average_day(day)
+
+
 
 
 
@@ -567,7 +651,6 @@ def on_message(client, userdata, message):
         'temperature': cur_temperature
     })
 
-    print('test1')
 
     #Unpload to hourly backlog
     ref = db.reference('/l_hour/RAW')
@@ -575,13 +658,21 @@ def on_message(client, userdata, message):
     ref.child('humidity').update({cur_minute: cur_humidity})
     ref.child('temperature').update({cur_minute: cur_temperature})
 
-
+    print('test1')
     update_hour_graphs(cur_hour, cur_day)
+    print('test2')
 
+    send_notifications(received_payload)
+
+
+    print('test3')
     last_hour = cur_hour
     last_day = cur_day
-    print('Last hour at the end of a message: ', last_hour)
-    print('Current hour at the end of a message: ', cur_hour)
+
+    print('Finished On Message')
+
+
+
 
 
 
@@ -598,19 +689,20 @@ else:
 
 client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
-flood_database()
-initialise_averages()
-average_hour_graph(last_hour, last_day)
+# initialise_averages()
+# average_hour_graph(last_hour, last_day)
 
-average_hour_over_day()
-update_hour_graphs(last_hour, last_day)
-
-client.loop_forever() ##blocks for 100ms
+# average_hour_over_day()
+# update_hour_graphs(last_hour, last_day)
+# send_notifications({'light' :20,
+#                     'temperature': 21,
+#                     'humidity': 22})
+client.loop_forever()
 print("Done")
 
 # upper_range = 27
 # lower_range = 18
 # yesterday = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
 # today = list_to_dict([20,21,20,21,20,21,20,21,20,21,20,21,20,21])
-average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
-average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
+# average_hour_graph_temp(last_hour, last_day, yesterday, today, upper_range, lower_range)
+# average_hour_graph_hum(last_hour, last_day, yesterday, today, upper_range, lower_range)
