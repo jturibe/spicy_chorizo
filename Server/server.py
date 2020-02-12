@@ -35,6 +35,7 @@ def list_to_dict(raw_data):
     dict = {}
     for i in range(len(raw_data)):
         if raw_data[i] != None:
+            print(raw_data[i])
             if not np.isnan(raw_data[i]):
                 dict[str(i)] = raw_data[i]
 
@@ -54,6 +55,24 @@ def filter_none(lst):
  #######################################################################################################
  #-----------------------------Graph creation--------------------------------------------------------
  #######################################################################################################
+def update_day_graphs(cur_day):
+    ref = db.reference('/l_week/week_AVG/')
+    #Retrieve data from firebase
+    humidity_values = list_to_dict(ref.child('humidity').get())
+    temperature_values = list_to_dict(ref.child('temperature').get())
+
+    ref = db.reference('/user_settings')
+    settings = ref.get()
+    if(settings is None):
+        settings = { 'humidity_max' : 70,
+                     'humidity_min' : 60,
+                     'temperature_max' : 18,
+                     'temperature_min' : 7
+        }
+
+    average_day_graph_temp(cur_day, temperature_values, settings[temperature_min], settings[temperature_max])
+
+
 
 def update_hour_graphs(cur_hour, cur_day):
 
@@ -74,10 +93,10 @@ def update_hour_graphs(cur_hour, cur_day):
     ref = db.reference('/user_settings')
     settings = ref.get()
     if(settings is None):
-        settings = { 'humidity_max' : 30,
-                     'humidity_min' : 10,
-                     'temperature_max' : 30,
-                     'temperature_min' : 5
+        settings = { 'humidity_max' : 70,
+                     'humidity_min' : 60,
+                     'temperature_max' : 18,
+                     'temperature_min' : 7
         }
 
     average_hour_graph_temp(cur_hour, cur_day, temperature_values_yesterday, temperature_values_today, settings['temperature_max'], settings['temperature_min'])
@@ -149,8 +168,9 @@ def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today,
     plt.clf()
     with open("average_hour_graph_temp.png", "rb") as img_file:
         image_string = base64.b64encode(img_file.read())
-    ref_average_hour_graph_temp = db.reference('/graphs/average_hour_graph')
-    ref_average_hour_graph_temp.update({'temp_image': str(image_string)})
+
+    ref_average_hour_graph_temp = db.reference('/graphs_temp')
+    ref_average_hour_graph_temp.update({'average_hour_graph': image_string.decode()})
 
 def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, upper_range, lower_range): #current hour, day of today
     # ref_today =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
@@ -214,11 +234,13 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     axes = plt.gca()
     axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
     seaborn.despine(left=True, bottom=True, right=True)
-    plt.savefig('test_hum.png')
+    plt.savefig("average_hour_graph_hum.png")
     plt.clf()
+    with open("average_hour_graph_hum.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
 
-
-
+    ref_average_hour_graph_temp = db.reference('/graphs_hum')
+    ref_average_hour_graph_temp.update({'average_hour_graph': image_string.decode()})
 
 
 
@@ -397,95 +419,6 @@ def average_hour_over_day():
 
 
 
-
-
-
-
-def flood_database(): #helper function to flood the database with 0 for testing
-
-    for day in range(7):
-
-        ref = db.reference('/l_week/hour_AVG/weekday_' + str(day))
-        ref_light = ref.child('light')
-        ref_hum = ref.child('humidity')
-        ref_temp = ref.child('temperature')
-
-
-        ref_light.update({  0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
-
-
-        ref_hum.update({    0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
-
-        ref_temp.update({ 0: 0,
-                            1: 0,
-                            2: 0,
-                            3: 0,
-                            4: 0,
-                            5: 0,
-                            6: 0,
-                            7: 0,
-                            8: 0,
-                            9: 0,
-                            10: 0,
-                            11: 0,
-                            12: 0,
-                            13: 0,
-                            14: 0,
-                            15: 0,
-                            16: 0,
-                            17: 0,
-                            18: 0,
-                            19: 0,
-                            20: 0,
-                            21: 0,
-                            22: 0,
-                            23: 0})
 
 
 def initialise_averages(): #helper function to flood the averages
@@ -707,12 +640,12 @@ def on_message(client, userdata, message):
     cur_temperature = received_payload['temperature']
 
     #Compress light value for user display
+    compressed_light = 'Bright'
     if(cur_light<10):
-        cur_light = 'Dark'
+        compressed_light = 'Dark'
     elif(cur_light<50):
-        cur_light = 'Dim'
-    else:
-        cur_light = 'Bright'
+        compressed_light = 'Dim'
+
 
     print(received_payload)
     print('Light levels compressed')
@@ -720,7 +653,7 @@ def on_message(client, userdata, message):
     #Upload to current data
     ref = db.reference('/current_measurement')
     ref.update({
-        'light': cur_light,
+        'light': compressed_light,
         'humidity': cur_humidity,
         'temperature': cur_temperature
     })
@@ -748,6 +681,10 @@ def on_message(client, userdata, message):
 #-----------------------------Main connections and actions on server startup--------------------------------------------------------
 #######################################################################################################
 
+
+
+
+
 client = mqtt.Client()
 client.tls_set(ca_certs="mosquitto.org.crt", certfile="client.crt",keyfile="client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
 con_code = client.connect("test.mosquitto.org",port=8884)
@@ -760,15 +697,8 @@ else:
 
 client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
-# flood_database()
-# initialise_averages()
-# average_hour_graph(last_hour, last_day)
 
-# average_hour_over_day()
-# update_hour_graphs(last_hour, last_day)
-# send_notifications({'light' :20,
-#                     'temperature': 21,
-#                     'humidity': 22})
+
 client.loop_forever()
 print("Done")
 
