@@ -13,6 +13,7 @@ import matplotlib.pyplot  as plt
 import seaborn
 import base64
 import time
+import calendar
 # Connect to Firebase
 cred = credentials.Certificate("Firebase/spicychorizo-794f1-firebase-adminsdk-dckj3-acd1fd6dc2.json")
 firebase_admin.initialize_app(cred, {
@@ -35,7 +36,6 @@ def list_to_dict(raw_data):
     dict = {}
     for i in range(len(raw_data)):
         if raw_data[i] != None:
-            print(raw_data[i])
             if not np.isnan(raw_data[i]):
                 dict[str(i)] = raw_data[i]
 
@@ -55,6 +55,124 @@ def filter_none(lst):
  #######################################################################################################
  #-----------------------------Graph creation--------------------------------------------------------
  #######################################################################################################
+def update_week_hour_graphs():
+
+    ref = db.reference('/l_week/week_hour_AVG')
+    #Retreive data from Firebase
+    humidity_values = list_to_dict(ref.child('humidity').get())
+    temperature_values = list_to_dict(ref.child('temperature').get())
+
+
+    ref = db.reference('/user_settings')
+    settings = ref.get()
+    if(settings is None):
+        settings = { 'humidity_max' : 70,
+                     'humidity_min' : 60,
+                     'temperature_max' : 18,
+                     'temperature_min' : 7
+        }
+
+    average_week_hour_graph_temp(temperature_values, settings['temperature_max'], settings['temperature_min'])
+    average_week_hour_graph_hum(humidity_values, settings['humidity_max'], settings['humidity_min'])
+
+def average_week_hour_graph_temp(temperature_values, lower_range, upper_range):
+    graph_labels = []
+    graph_data = []
+    if temperature_values is not None:
+        for i in range(24):
+            graph_labels.append(str(i) + ":00")
+            if str(i) in temperature_values:
+                graph_data.append(temperature_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
+
+    else:
+        for i in range(24):
+            graph_data.append(str(i) + ":00")
+            graph_data.append(np.NaN)
+
+    time_labels = []
+    graph_data = np.asarray(graph_data)
+    series = np.array(graph_data).astype(np.double)
+    mask = np.isfinite(series)
+    xi = np.arange(24)
+    allowed_ticks = [0, 4, 8, 12, 16, 20, 23]
+    time_labels = []
+    for tick in allowed_ticks:
+        time_labels.append(graph_labels[tick])
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
+    plt.xticks(allowed_ticks, time_labels)
+    plt.locator_params(axis='x', nbins=24)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.5)
+
+    upper_array = [upper_range]*24
+    lower_array = [lower_range]*24
+    upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
+    plt.ylabel("Average Temperature(°C)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(daily)", fontweight="medium", fontsize="12")
+    plt.title("Temperature(°C) per hour, averaged over 7 days", fontweight="medium", fontsize="12")
+    axes = plt.gca()
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
+    seaborn.despine(left=True, bottom=True, right=True)
+    plt.savefig('average_week_hour_graph_temp.png')
+    plt.clf()
+    with open("average_week_hour_graph_temp.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
+
+    ref_average_week_hour_graph_temp = db.reference('/graphs_temp')
+    ref_average_week_hour_graph_temp.update({'average_week_hour_graph': image_string.decode()})
+
+def average_week_hour_graph_hum(humidity_values, lower_range, upper_range):
+    graph_labels = []
+    graph_data = []
+    if humidity_values is not None:
+        for i in range(24):
+            graph_labels.append(str(i) + ":00")
+            if str(i) in humidity_values:
+                graph_data.append(humidity_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
+
+    else:
+        for i in range(24):
+            graph_data.append(str(i) + ":00")
+            graph_data.append(np.NaN)
+
+    time_labels = []
+    graph_data = np.asarray(graph_data)
+    series = np.array(graph_data).astype(np.double)
+    mask = np.isfinite(series)
+    xi = np.arange(24)
+    allowed_ticks = [0, 4, 8, 12, 16, 20, 23]
+    time_labels = []
+    for tick in allowed_ticks:
+        time_labels.append(graph_labels[tick])
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
+    plt.xticks(allowed_ticks, time_labels)
+    plt.locator_params(axis='x', nbins=24)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.5)
+
+    upper_array = [upper_range]*24
+    lower_array = [lower_range]*24
+    upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
+    plt.ylabel("Average Humidity(%)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(hourly)", fontweight="medium", fontsize="12")
+    plt.title("Relative Humidity(%) per hour, averaged over 7 days", fontweight="medium", fontsize="12")
+    axes = plt.gca()
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
+    seaborn.despine(left=True, bottom=True, right=True)
+    plt.savefig('average_week_hour_graph_hum.png')
+    plt.clf()
+    with open("average_week_hour_graph_hum.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
+
+    ref_average_week_hour_graph_hum = db.reference('/graphs_hum')
+    ref_average_week_hour_graph_hum.update({'average_week_hour_graph': image_string.decode()})
+
 def update_day_graphs(cur_day):
     ref = db.reference('/l_week/week_AVG/')
     #Retrieve data from firebase
@@ -70,9 +188,118 @@ def update_day_graphs(cur_day):
                      'temperature_min' : 7
         }
 
-    average_day_graph_temp(cur_day, temperature_values, settings[temperature_min], settings[temperature_max])
+    average_day_graph_temp(cur_day, temperature_values, settings['temperature_min'], settings['temperature_max'])
+    average_day_graph_hum(cur_day, humidity_values, settings['humidity_min'], settings['humidity_max'])
 
+def average_day_graph_temp(day, temperature_values, lower_range, upper_range):
+    graph_labels = []
+    graph_data = []
+    if temperature_values is not None:
+        for i in range(day + 1, 7):
+            graph_labels.append(calendar.day_name[i])
+            if str(i) in temperature_values:
+                graph_data.append(temperature_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
+        for i in range(0, day + 1):
+            graph_labels.append(calendar.day_name[i])
+            if str(i) in temperature_values:
+                graph_data.append(temperature_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
 
+    else:
+        for i in range(7):
+            graph_data.append(calendar.day_name[i])
+            graph_data.append(np.NaN)
+
+    time_labels = []
+    graph_data = np.asarray(graph_data)
+    series = np.array(graph_data).astype(np.double)
+    mask = np.isfinite(series)
+    xi = np.arange(7)
+    allowed_ticks = [0, 1, 2, 3, 4, 5, 6]
+    time_labels = []
+    for tick in allowed_ticks:
+        time_labels.append(graph_labels[tick])
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
+    plt.xticks(allowed_ticks, time_labels)
+    plt.locator_params(axis='x', nbins=7)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.5)
+
+    upper_array = [upper_range]*7
+    lower_array = [lower_range]*7
+    upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
+    plt.ylabel("Average Temperature(°C)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(daily)", fontweight="medium", fontsize="12")
+    plt.title("Average Temperature(°C) per day, for the past 7 days", fontweight="medium", fontsize="12")
+    axes = plt.gca()
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
+    seaborn.despine(left=True, bottom=True, right=True)
+    plt.savefig('average_day_graph_temp.png')
+    plt.clf()
+    with open("average_day_graph_temp.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
+
+    ref_average_hour_graph_temp = db.reference('/graphs_temp')
+    ref_average_hour_graph_temp.update({'average_day_graph': image_string.decode()})
+
+def average_day_graph_hum(day, humidity_values, lower_range, upper_range):
+    graph_labels = []
+    graph_data = []
+    if humidity_values is not None:
+        for i in range(day + 1, 7):
+            graph_labels.append(calendar.day_name[i])
+            if str(i) in humidity_values:
+                graph_data.append(humidity_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
+        for i in range(0, day + 1):
+            graph_labels.append(calendar.day_name[i])
+            if str(i) in humidity_values:
+                graph_data.append(humidity_values[str(i)])
+            else:
+                graph_data.append(np.NaN)
+
+    else:
+        for i in range(7):
+            graph_data.append(calendar.day_name[i])
+            graph_data.append(np.NaN)
+
+    time_labels = []
+    graph_data = np.asarray(graph_data)
+    series = np.array(graph_data).astype(np.double)
+    mask = np.isfinite(series)
+    xi = np.arange(7)
+    allowed_ticks = [0, 1, 2, 3, 4, 5, 6]
+    time_labels = []
+    for tick in allowed_ticks:
+        time_labels.append(graph_labels[tick])
+    plot = plt.plot(xi[mask], graph_data[mask], linestyle='-', color='#000000',linewidth=2)
+    plt.xticks(allowed_ticks, time_labels)
+    plt.locator_params(axis='x', nbins=7)
+    #plt.fill_between(xi[mask], graph_data[mask], y2=0, facecolor='#4D071D', alpha=0.5)
+
+    upper_array = [upper_range]*7
+    lower_array = [lower_range]*7
+    upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
+    lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
+    plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
+    plt.ylabel("Average Humidity(%)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(daily)", fontweight="medium", fontsize="12")
+    plt.title("Average Relative Humidity(%) per day, for the past 7 days", fontweight="medium", fontsize="12")
+    axes = plt.gca()
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
+    seaborn.despine(left=True, bottom=True, right=True)
+    plt.savefig('average_day_graph_hum.png')
+    plt.clf()
+    with open("average_day_graph_hum.png", "rb") as img_file:
+        image_string = base64.b64encode(img_file.read())
+
+    ref_average_hour_graph_temp = db.reference('/graphs_hum')
+    ref_average_hour_graph_temp.update({'average_day_graph': image_string.decode()})
 
 def update_hour_graphs(cur_hour, cur_day):
 
@@ -103,14 +330,8 @@ def update_hour_graphs(cur_hour, cur_day):
     average_hour_graph_hum(cur_hour, cur_day, humidity_values_yesterday, humidity_values_today, settings['humidity_max'], settings['humidity_min'])
 
 def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today, upper_range, lower_range): #current hour, day of today
-    # ref_today =  db.reference('/l_week/hour_AVG/weekday_' + str(day))
-    # ref_yesterday = db.reference('/l_week/hour_AVG/weekday_' + str((day-1)%7))
-    #
-    # light_values_today = ref_today.child('light').get()
-    # light_values_yesterday = ref_yesterday.child('light').get()
     graph_labels = []
     graph_data = []
-    # graph_data[:,:] = np.NaN
 
     if temp_values_yesterday is not None:
         for i in range(hour + 1, 24): #take the required hours from yesterday
@@ -159,10 +380,11 @@ def average_hour_graph_temp(hour, day, temp_values_yesterday, temp_values_today,
     upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
     lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
     plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
-    plt.ylabel("Temperature(°C)", fontname="sans-serif", fontweight="light", fontsize="12")
-    plt.xlabel("Time(hourly)", fontname="sans-serif", fontweight="light", fontsize="12")
+    plt.ylabel("Temperature(°C)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(hourly)", fontweight="medium", fontsize="12")
+    plt.title("Average Temperature(°C) per hour, for the past 24 hours", fontweight="medium", fontsize="12")
     axes = plt.gca()
-    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
     seaborn.despine(left=True, bottom=True, right=True)
     plt.savefig('average_hour_graph_temp.png')
     plt.clf()
@@ -215,7 +437,7 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     series = np.array(graph_data).astype(np.double)
     mask = np.isfinite(series)
     xi = np.arange(24)
-    allowed_ticks = [0, 4, 8, 12, 16, 20, 23]
+    allowed_ticks = [0, 4, 8, 12, 16, 12, 23]
     time_labels = []
     for tick in allowed_ticks:
         time_labels.append(graph_labels[tick])
@@ -229,10 +451,11 @@ def average_hour_graph_hum(hour, day, hum_values_yesterday, hum_values_today, up
     upper = plt.plot(xi, upper_array, linestyle='--', color='#808080',linewidth=1.25)
     lower = plt.plot(xi, lower_array, linestyle='--', color='#808080',linewidth=1.25)
     plt.fill_between(xi, upper_array, y2=lower_array, facecolor='#C5FFA8', alpha=0.25)
-    plt.ylabel("Relative Humidity(%)", fontname="sans-serif", fontweight="light", fontsize="12")
-    plt.xlabel("Time(hourly)", fontname="sans-serif", fontweight="light", fontsize="12")
+    plt.ylabel("Relative Humidity(%)", fontweight="medium", fontsize="12")
+    plt.xlabel("Time(hourly)", fontweight="medium", fontsize="12")
+    plt.title("Average Relative Humidity(%) per hour, for the past 24 hours", fontweight="medium", fontsize="12")
     axes = plt.gca()
-    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max()*1.2,upper_range*1.2])])
+    axes.set_ylim([min([graph_data[mask].min()*0.8,lower_range*0.8]),max([graph_data[mask].max(),upper_range]) + abs(min([graph_data[mask].min()*0.2,lower_range*0.2]))])
     seaborn.despine(left=True, bottom=True, right=True)
     plt.savefig("average_hour_graph_hum.png")
     plt.clf()
@@ -581,8 +804,8 @@ def send_to_topic():
 
     message = messaging.Message(
         notification=messaging.Notification(
-            title='EMERGENCY',
-            body='TEMPERATURE IS TOO HOT HOT HOT',
+            title='Warning:',
+            body='Temperature is too high for your wine',
         ),
         topic=topic,
     )
@@ -592,10 +815,6 @@ def send_to_topic():
     # Response is a message ID string.
     print('Successfully sent message:', response)
     # [END send_to_topic]
-
-
-
-
 
  #######################################################################################################
  #-----------------------------On message--------------------------------------------------------
@@ -666,6 +885,12 @@ def on_message(client, userdata, message):
     ref.child('temperature').update({cur_minute: cur_temperature})
 
     #Update last 24h average graphs since they contain last value as the current one
+    update_week_hour_graphs()
+    print('Updated Week hour graphs')
+
+    update_day_graphs(cur_day)
+    print('Updated last day average graphs')
+
     update_hour_graphs(cur_hour, cur_day)
     print('Updated last 24h average graphs')
 
@@ -697,7 +922,6 @@ else:
 
 client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
-
 
 client.loop_forever()
 print("Done")
