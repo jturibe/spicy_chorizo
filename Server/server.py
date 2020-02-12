@@ -664,30 +664,25 @@ def send_to_topic():
 
 
 
-
-
-
-
-
-
-
-
+ #######################################################################################################
+ #-----------------------------On message--------------------------------------------------------
+ #######################################################################################################
 def on_message(client, userdata, message):
+    #Global variables
     global last_hour
     global last_day
 
-    print('Last hour at the start of a message: ', last_hour)
-
     print('Received a message')
-
-    now = datetime.datetime.now()
     received_payload = json.loads(message.payload)
+
+    #Current time
+    now = datetime.datetime.now()
     cur_minute = now.minute
     cur_hour = now.hour
     cur_day = now.weekday()
 
 
-
+    #Check if averages need to be updated
     if(cur_hour != last_hour):
         print('The hour has changed -> Updating averages and graphs')
         average_hour(last_hour, last_day)
@@ -705,20 +700,31 @@ def on_message(client, userdata, message):
     # average_day(last_day)
     # print('------Done-------')
 
+
+    #Retreive the individual values
     cur_light = received_payload['light']
     cur_humidity = received_payload['humidity']
     cur_temperature = received_payload['temperature']
 
-    print(received_payload)
+    #Compress light value for user display
+    if(cur_light<10):
+        cur_light = 'Dark'
+    elif(cur_light<50):
+        cur_light = 'Dim'
+    else:
+        cur_light = 'Bright'
 
-    #Unpload to current data
+    print(received_payload)
+    print('Light levels compressed')
+
+    #Upload to current data
     ref = db.reference('/current_measurement')
     ref.update({
         'light': cur_light,
         'humidity': cur_humidity,
         'temperature': cur_temperature
     })
-
+    print('Current measurements updated')
 
     #Unpload to hourly backlog
     ref = db.reference('/l_hour/RAW')
@@ -726,20 +732,21 @@ def on_message(client, userdata, message):
     ref.child('humidity').update({cur_minute: cur_humidity})
     ref.child('temperature').update({cur_minute: cur_temperature})
 
-    print('test1')
+    #Update last 24h average graphs since they contain last value as the current one
     update_hour_graphs(cur_hour, cur_day)
-    print('test2')
+    print('Updated last 24h average graphs')
 
     send_notifications(received_payload)
+    print('Checked and sent notifications')
 
-
-    print('test3')
     last_hour = cur_hour
     last_day = cur_day
 
-    print('Finished On Message')
+    print('Finished On Message\n\n')
 
-
+#######################################################################################################
+#-----------------------------Main connections and actions on server startup--------------------------------------------------------
+#######################################################################################################
 
 client = mqtt.Client()
 client.tls_set(ca_certs="mosquitto.org.crt", certfile="client.crt",keyfile="client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
