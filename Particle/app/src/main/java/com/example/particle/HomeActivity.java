@@ -151,8 +151,19 @@ public class HomeActivity extends Activity {
                             image_bitmaps.add(image);
                         }
 
+                        int position = viewPager.getCurrentItem();
                         viewPagerAdapter = new ViewPagerAdapter(image_bitmaps, HomeActivity.this);
+
                         viewPager.setAdapter(viewPagerAdapter);
+                        viewPager.setCurrentItem(position);
+                        dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.active_dot));
+                        for(int i = 0; i < 3; i++){
+                            if(i != position){
+                                dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                        R.drawable.nonactive_dot));
+                            }
+                        }
                     }
 
                     @Override
@@ -191,8 +202,19 @@ public class HomeActivity extends Activity {
                             image_bitmaps.add(image);
                         }
 
+                        int position = viewPager.getCurrentItem();
                         viewPagerAdapter = new ViewPagerAdapter(image_bitmaps, HomeActivity.this);
+
                         viewPager.setAdapter(viewPagerAdapter);
+                        viewPager.setCurrentItem(position);
+                        dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                R.drawable.active_dot));
+                        for(int i = 0; i < 3; i++){
+                            if(i != position){
+                                dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                        R.drawable.nonactive_dot));
+                            }
+                        }
                     }
 
                     @Override
@@ -254,10 +276,17 @@ public class HomeActivity extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = Integer.toString((int) Math.round(dataSnapshot.getValue(Double.class)));
-                TextView lighting= findViewById(R.id.current_light);
-                String light_text = value;
+                String light_text = dataSnapshot.getValue(String.class);
+                TextView lighting = findViewById(R.id.current_light);
                 lighting.setText(light_text);
+                ImageView icon = findViewById(R.id.lig);
+                if (light_text.equals("Bright")) {
+                    icon.setImageResource(R.drawable.bright);
+                } else if (light_text.equals("Dim")) {
+                    icon.setImageResource(R.drawable.dim);
+                } else {
+                    icon.setImageResource(R.drawable.dark);
+                }
             }
 
             @Override
@@ -284,9 +313,19 @@ public class HomeActivity extends Activity {
                         Log.w(TAG, "after bitmap factory");
                         image_bitmaps.add(image);
                     }
-
+                    int position = viewPager.getCurrentItem();
                     viewPagerAdapter = new ViewPagerAdapter(image_bitmaps, HomeActivity.this);
+
                     viewPager.setAdapter(viewPagerAdapter);
+                    viewPager.setCurrentItem(position);
+                    dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                            R.drawable.active_dot));
+                    for(int i = 0; i < 3; i++){
+                        if(i != position){
+                            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                    R.drawable.nonactive_dot));
+                        }
+                    }
 
                 }
 
@@ -312,8 +351,19 @@ public class HomeActivity extends Activity {
                         image_bitmaps.add(image);
                     }
 
+                    int position = viewPager.getCurrentItem();
                     viewPagerAdapter = new ViewPagerAdapter(image_bitmaps, HomeActivity.this);
+
                     viewPager.setAdapter(viewPagerAdapter);
+                    viewPager.setCurrentItem(position);
+                    dots[position].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                            R.drawable.active_dot));
+                    for(int i = 0; i < 3; i++){
+                        if(i != position){
+                            dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),
+                                    R.drawable.nonactive_dot));
+                        }
+                    }
                 }
 
             }
