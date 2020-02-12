@@ -35,6 +35,7 @@ def list_to_dict(raw_data):
     dict = {}
     for i in range(len(raw_data)):
         if raw_data[i] != None:
+            print(raw_data[i])
             if not np.isnan(raw_data[i]):
                 dict[str(i)] = raw_data[i]
 
@@ -707,12 +708,12 @@ def on_message(client, userdata, message):
     cur_temperature = received_payload['temperature']
 
     #Compress light value for user display
+    compressed_light = 'Bright'
     if(cur_light<10):
-        cur_light = 'Dark'
+        compressed_light = 'Dark'
     elif(cur_light<50):
-        cur_light = 'Dim'
-    else:
-        cur_light = 'Bright'
+        compressed_light = 'Dim'
+
 
     print(received_payload)
     print('Light levels compressed')
@@ -720,7 +721,7 @@ def on_message(client, userdata, message):
     #Upload to current data
     ref = db.reference('/current_measurement')
     ref.update({
-        'light': cur_light,
+        'light': compressed_light,
         'humidity': cur_humidity,
         'temperature': cur_temperature
     })
@@ -760,15 +761,8 @@ else:
 
 client.on_message = on_message
 client.subscribe("IC.embedded/spicy_chorizo/#")
-# flood_database()
-# initialise_averages()
-# average_hour_graph(last_hour, last_day)
 
-# average_hour_over_day()
-# update_hour_graphs(last_hour, last_day)
-# send_notifications({'light' :20,
-#                     'temperature': 21,
-#                     'humidity': 22})
+
 client.loop_forever()
 print("Done")
 
