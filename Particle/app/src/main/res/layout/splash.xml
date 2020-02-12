@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4D071D"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/textView"
@@ -15,4 +16,13 @@
         android:text="Bodega."
         android:textColor="#FFFFFF"
         android:textSize="50sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/futura"
+        android:text="Powered by spicy chorizo"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp" />
 </LinearLayout>
