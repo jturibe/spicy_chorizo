@@ -49,12 +49,16 @@ public class editSettings extends Activity {
 
                 String minTempInputint= editTextMinTemp.getText().toString();
                 int minTempInputFinal = Integer.parseInt(minTempInputint);
+                String maxTempInputint= editTextMaxTemp.getText().toString();
+                int maxTempInputFinal = Integer.parseInt(maxTempInputint);
+                String minHumInputint= editTextMinHum.getText().toString();
+                int minHumInputFinal = Integer.parseInt(minHumInputint);
+                String maxHumInputint= editTextMaxHum.getText().toString();
+                int maxHumInputFinal = Integer.parseInt(maxHumInputint);
 
-                //TODO add if statements
-
-                if (minTempInputFinal<4) {
+                if (minTempInputFinal<0 || maxTempInputFinal > 26 || minHumInputFinal < 50 || maxHumInputFinal > 80) {
                     AlertDialog.Builder minTempTooLow = new AlertDialog.Builder(editSettings.this);
-                    minTempTooLow.setMessage("The minimum temperature set is dangerously low, " +
+                    minTempTooLow.setMessage("One of the settings is dangerously high/low, " +
                             "do you want to change it?")
                             .setPositiveButton("No",
                                     new DialogInterface.OnClickListener() {
